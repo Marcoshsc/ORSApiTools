@@ -5,8 +5,8 @@ import com.github.marcoshsc.orsApiTools.general.superclasses.NumericParameter;
 
 /**
  * Left border of rectangular boundary to narrow results.
- * Use with {@link BoundaryRectMaximumLongitude} & {@link BoundaryRectMaximumLatitude}
- * & {@link BoundaryRectMinimumLatitude}.
+ * Use with {@link BoundaryRectMaximumLongitude} and {@link BoundaryRectMaximumLatitude}
+ * and {@link BoundaryRectMinimumLatitude}.
  *
  * @author Marcos Henrique in 27-04-2020
  */

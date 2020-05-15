@@ -3,8 +3,6 @@ package com.github.marcoshsc.orsApiTools.directions.enums;
 /**
  * 
  * Enum that describes all the possible values to the profile query param, from the ORS API.
- * 
- * @modifiedBy Marcos Henrique Santos Cunha in March 11th, 2020.
  *
  */
 public enum EnumProfile {

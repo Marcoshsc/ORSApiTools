@@ -1,4 +1,4 @@
-package br.sbrp.project.geoTools.apiTests;
+package com.github.marcoshsc.apiTests;
 
 import com.github.marcoshsc.orsApiTools.directions.DirectionsResponse;
 import com.github.marcoshsc.orsApiTools.directions.ORSDirectionsRequest;

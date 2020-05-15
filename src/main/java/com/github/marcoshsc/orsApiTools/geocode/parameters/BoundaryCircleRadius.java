@@ -5,7 +5,7 @@ import com.github.marcoshsc.orsApiTools.general.superclasses.NumericParameter;
 
 /**
  * Radius of circular boundary around the center coordinate in kilometers.
- * Use with {@link BoundaryCircleLongitude} & {@link BoundaryCircleLatitude}
+ * Use with {@link BoundaryCircleLongitude} and {@link BoundaryCircleLatitude}
  *
  * Default value is 50 kilometers.
  *

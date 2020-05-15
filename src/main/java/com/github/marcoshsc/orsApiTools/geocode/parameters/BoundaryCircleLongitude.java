@@ -5,7 +5,7 @@ import com.github.marcoshsc.orsApiTools.general.superclasses.NumericParameter;
 
 /**
  * Center Longitude of circular boundary to narrow results.
- * Use with {@link BoundaryCircleLatitude} & {@link BoundaryCircleRadius}.
+ * Use with {@link BoundaryCircleLatitude} and {@link BoundaryCircleRadius}.
  *
  * @author Marcos Henrique in 27-04-2020
  */
