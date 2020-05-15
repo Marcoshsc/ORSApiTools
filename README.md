@@ -30,7 +30,18 @@ discuss what you would like to change.
 If you want to build a new endpoint implementation, also open an issue to
 discuss what is going to be done.
 
-## Usage
+## Importing
+Add the following dependency to your pom.xml:
+
+    <dependency>
+      <groupId>com.github.marcoshsc</groupId>
+      <artifactId>orsApiTools</artifactId>
+      <version>1.0</version>
+    </dependency>
+    
+After that, everything is working. Enjoy!
+    
+## Usage examples
 
 You can either pass an api key as the parameter or set a "ors.key" file in the 
 project with the api key inside of it, and use ApiKeyGetter to get the value.
