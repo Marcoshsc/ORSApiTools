@@ -2,6 +2,7 @@ package com.github.marcoshsc.apiTests;
 
 import com.github.marcoshsc.orsApiTools.directions.enums.EnumMetrics;
 import com.github.marcoshsc.orsApiTools.directions.enums.EnumProfile;
+import com.github.marcoshsc.orsApiTools.general.ORSEndpoints;
 import com.github.marcoshsc.orsApiTools.general.exceptions.InvalidParameters;
 import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
 import com.github.marcoshsc.orsApiTools.general.parameters.Profile;
@@ -21,7 +22,7 @@ public class MatrixTest {
 
     @Test
     public void simpleTest() throws InvalidParameters, RequestException, IOException {
-        ORSMatrixRequest req = new ORSMatrixRequest(ApiKeyGetter.getApiKey());
+        ORSMatrixRequest req = ORSEndpoints.getMatrix(ApiKeyGetter.getApiKey());
         req.getParameters().setProfile(new Profile(EnumProfile.DRIVING_CAR));
         req.getParameters().setLocations(new Locations(Arrays.asList(
 //                new Coordinate(-43.177152,-19.807156),

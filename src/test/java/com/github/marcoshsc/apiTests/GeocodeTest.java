@@ -1,5 +1,6 @@
 package com.github.marcoshsc.apiTests;
 
+import com.github.marcoshsc.orsApiTools.general.ORSEndpoints;
 import com.github.marcoshsc.orsApiTools.general.exceptions.InvalidParameters;
 import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
 import com.github.marcoshsc.orsApiTools.general.parameters.ApiKey;
@@ -26,7 +27,7 @@ public class GeocodeTest {
     @Test
     public void simpleTest() throws InvalidParameters, RequestException, IOException {
         String key = ApiKeyGetter.getApiKey();
-        GeocodeSearchRequest request = new GeocodeSearchRequest(key);
+        GeocodeSearchRequest request = ORSEndpoints.getGeocodeSearch(key);
         request.getParameters().setText(new Text("Avenida Getúlio Vargas, JM"));
         GeocodeSearchResponse response = request.makeRequest();
         for (Location location :

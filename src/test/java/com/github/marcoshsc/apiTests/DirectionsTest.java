@@ -6,6 +6,7 @@ import com.github.marcoshsc.orsApiTools.directions.enums.*;
 import com.github.marcoshsc.orsApiTools.directions.parameters.*;
 import com.github.marcoshsc.orsApiTools.directions.helperclasses.Segment;
 import com.github.marcoshsc.orsApiTools.directions.helperclasses.Step;
+import com.github.marcoshsc.orsApiTools.general.ORSEndpoints;
 import com.github.marcoshsc.orsApiTools.general.exceptions.InvalidParameters;
 import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
 import com.github.marcoshsc.orsApiTools.general.parameters.Profile;
@@ -20,7 +21,7 @@ public class DirectionsTest {
 
     @Test
     public void simpleTest() throws IOException {
-        ORSDirectionsRequest req = new ORSDirectionsRequest(ApiKeyGetter.getApiKey());
+        ORSDirectionsRequest req = ORSEndpoints.getDirections(ApiKeyGetter.getApiKey());
         req.getParameters().setProfile(new Profile(EnumProfile.DRIVING_CAR));
         req.getParameters().setGeometryFormat(new GeometryFormat(EnumDirectionsGeomType.GEOJSON));
         req.getParameters().setCoordinates(new Coordinates(Arrays.asList(

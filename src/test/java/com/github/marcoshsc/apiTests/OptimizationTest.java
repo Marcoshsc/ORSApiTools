@@ -4,6 +4,7 @@ import com.github.marcoshsc.orsApiTools.directions.enums.EnumProfile;
 import com.github.marcoshsc.orsApiTools.general.ORSEndpoints;
 import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
 import com.github.marcoshsc.orsApiTools.optimization.OptimizationRequest;
+import com.github.marcoshsc.orsApiTools.optimization.OptimizationResponse;
 import com.github.marcoshsc.orsApiTools.optimization.helperclasses.*;
 import com.github.marcoshsc.orsApiTools.optimization.parameters.Jobs;
 import com.github.marcoshsc.orsApiTools.optimization.parameters.Shipments;
@@ -125,6 +126,7 @@ public class OptimizationTest {
                         null
                 )
         )));
-        System.out.println(req.makeRequest());
+        OptimizationResponse res = req.makeRequest();
+        System.out.println(res);
     }
 }
