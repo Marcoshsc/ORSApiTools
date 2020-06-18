@@ -1,5 +1,6 @@
 package com.github.marcoshsc.orsApiTools.matrix;
 
+import com.github.marcoshsc.orsApiTools.directions.enums.EnumMetrics;
 import com.github.marcoshsc.orsApiTools.general.ORSJSONProcessor;
 import com.github.marcoshsc.orsApiTools.general.enums.ORSEnum;
 import com.github.marcoshsc.orsApiTools.general.exceptions.InvalidParameters;
@@ -80,11 +81,35 @@ public class ORSMatrixRequest implements Request<MatrixResponse> {
         List<Integer> destinations = parameters.getDestinations() != null ? new ArrayList<>(parameters.getDestinations().getTypedValue())
                 : UtilityFunctions.getIntegerList(0, locations.size());
         MatrixResponse res = handleMultipleCoordinates();
+        boolean hasDistances = parameters.getMetrics().getTypedValue().contains(EnumMetrics.DISTANCE),
+                hasDurations = parameters.getMetrics().getTypedValue().contains(EnumMetrics.DURATION);
+        if(hasDistances)
+            verifyMatrix(res.getDistances(), sources, destinations);
+        if(hasDurations)
+            verifyMatrix(res.getDurations(), sources, destinations);
         MatrixRequestOptions options = res.getOptions();
         options.setLocations(locations);
         options.setSources(sources);
         options.setDestinations(destinations);
         return res;
+    }
+
+    private void verifyMatrix(List<List<Double>> matrix, List<Integer> sources, List<Integer> destinations) throws RequestException {
+        int matrixRows = matrix.size();
+        int rows = sources.size();
+        int columns = destinations.size();
+        if(rows != matrixRows) {
+            throw new RequestException(String.format("ORS Api error. The size of the matrix does not match with " +
+                    "the size of the given parameters. Matrix rows: %d, Source rows: %d.", matrixRows, rows));
+        }
+        for (List<Double> list : matrix) {
+            int matrixColumns = list.size();
+            if(columns != matrixColumns) {
+                throw new RequestException(String.format("ORS Api error. The size of the matrix does not match " +
+                                "with the size of the given parameters. Matrix columns: %d, Destination columns: %d.",
+                        matrixColumns, columns));
+            }
+        }
     }
 
     /**
@@ -174,6 +199,12 @@ public class ORSMatrixRequest implements Request<MatrixResponse> {
     private MatrixResponse getResponseFromLoop(List<Coordinate> destinations, MatrixResponse finalResponse,
                                                int destinationFinalLength, List<Coordinate> outerList)
             throws JSONException, InvalidParameters, UnsupportedEncodingException, RequestException {
+        if(destinationFinalLength == destinations.size()) {
+            configureParameters(outerList, destinations);
+            if(finalResponse == null) return makeSimpleRequest();
+            MatrixResponse.concatNewLine(finalResponse, makeSimpleRequest());
+            return finalResponse;
+        }
         for (int j = 0; j < destinations.size() - destinationFinalLength; j += 59) {
             List<Coordinate> innerList = destinations.subList(j, j + 59);
             configureParameters(outerList, innerList);

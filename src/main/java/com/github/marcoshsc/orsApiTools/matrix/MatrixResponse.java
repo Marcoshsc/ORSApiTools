@@ -55,7 +55,8 @@ public class MatrixResponse {
      */
     public static void concatNewColumns(MatrixResponse target, MatrixResponse toConcat) {
         if(toConcat == null || target == null)
-            return;
+            throw new IllegalArgumentException(String.format("Target: %s, Matrix to concat: %s, one of them are null.",
+                    target, toConcat));
         int distancesInitialSize = -1;
         int durationsInitialSize = -1;
         if(toConcat.distances != null && target.distances != null) {
