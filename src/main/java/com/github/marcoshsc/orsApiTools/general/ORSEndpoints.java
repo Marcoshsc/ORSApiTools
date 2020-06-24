@@ -2,6 +2,7 @@ package com.github.marcoshsc.orsApiTools.general;
 
 import com.github.marcoshsc.orsApiTools.directions.ORSDirectionsRequest;
 import com.github.marcoshsc.orsApiTools.geocode.GeocodeSearchRequest;
+import com.github.marcoshsc.orsApiTools.isochrones.IsochronesRequest;
 import com.github.marcoshsc.orsApiTools.matrix.ORSMatrixRequest;
 import com.github.marcoshsc.orsApiTools.optimization.OptimizationRequest;
 import com.github.marcoshsc.orsApiTools.pois.PoisRequest;
@@ -33,5 +34,7 @@ public interface ORSEndpoints {
     static OptimizationRequest getOptimization(String apiKey) {
         return new OptimizationRequest(apiKey);
     }
+
+    static IsochronesRequest getIsochrones(String apiKey) { return new IsochronesRequest(apiKey); }
 
 }

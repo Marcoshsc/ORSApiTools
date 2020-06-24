@@ -134,9 +134,33 @@ public enum ORSEnum {
 
 	VEHICLES_BODY_PARAM("vehicles"),
 
-	SHIPMENTS_BODY_PARAM("shipments");
+	SHIPMENTS_BODY_PARAM("shipments"),
+
+	ISOCHRONES_LOCATIONS_PARAM("locations"),
+
+	ISOCHRONES_RANGE_PARAM("range"),
+
+	ISOCHRONES_ATTRIBUTES_PARAM("attributes"),
+
+	ISOCHRONES_ID_PARAM("id"),
+
+	ISOCHRONES_INTERSECTIONS_PARAM("intersections"),
+
+	ISOCHRONES_INTERVAL_PARAM("interval"),
+
+	ISOCHRONES_LOCATION_TYPE_PARAM("location_type"),
+
+	ISOCHRONES_RANGE_TYPE_PARAM("range_type"),
+
+	ISOCHRONES_SMOOTHING_PARAM("smoothing"),
+
+	ISOCHRONES_AREA_UNITS_PARAM("area_units"),
+
+	ISOCHRONES_UNITS_PARAM("units");
+
+
 	
-	private String value;
+	private final String value;
 	
 	ORSEnum(String value) {
 		this.value = value;

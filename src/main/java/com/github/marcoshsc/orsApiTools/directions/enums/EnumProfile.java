@@ -1,5 +1,8 @@
 package com.github.marcoshsc.orsApiTools.directions.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * 
  * Enum that describes all the possible values to the profile query param, from the ORS API.
@@ -17,11 +20,17 @@ public enum EnumProfile {
 	FOOT_HIKING("foot-hiking"),
 	WHEELCHAIR("wheelchair");
 	
-	private String m_Type;
-	private EnumProfile(String p_Type) {
-		m_Type = p_Type;
+	private final String type;
+	EnumProfile(String type) {
+		this.type = type;
 	}
 
+	@JsonValue
+	public String getType() {
+		return type;
+	}
+
+	@JsonCreator
 	public static EnumProfile getByStr(String value) {
 		for (EnumProfile profile :
 				EnumProfile.values()) {
@@ -32,6 +41,6 @@ public enum EnumProfile {
 	}
 
 	public String toString() {
-		return m_Type;
+		return type;
 	}
 }

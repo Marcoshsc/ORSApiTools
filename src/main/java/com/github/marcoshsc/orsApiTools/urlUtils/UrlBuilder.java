@@ -46,6 +46,7 @@ public class UrlBuilder {
 			sb.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
 		}
 		url = sb.toString();
+		System.out.println(url);
 		return url;
 	}
 	

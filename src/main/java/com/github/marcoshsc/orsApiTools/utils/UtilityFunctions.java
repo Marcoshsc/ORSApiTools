@@ -1,5 +1,7 @@
 package com.github.marcoshsc.orsApiTools.utils;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
 import com.github.marcoshsc.orsApiTools.interfaces.JSONRequestBody;
 import com.github.marcoshsc.orsApiTools.optimization.helperclasses.TimeWindow;
@@ -10,7 +12,11 @@ import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,8 +31,43 @@ import java.util.Map;
 
 public interface UtilityFunctions {
 
+    static HttpResponse postHttpRequest(String URL, String json, Map<String, String> headers) throws IOException {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(URL);
+        for (String key : headers.keySet())
+            httpPost.setHeader(key, headers.get(key));
+        httpPost.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
+        return httpClient.execute(httpPost);
+    }
+
+    static void handleOSMStatusCode(HttpResponse response) throws RequestException {
+        int statusCode = response.getStatusLine().getStatusCode();
+        try {
+            if (statusCode >= 400) {
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode node = mapper.readValue(EntityUtils.toString(response.getEntity()), JsonNode.class);
+                if (node.has("error")) {
+                    JsonNode errorNode = node.get("error");
+                    String message = String.format("%s Error code: %d.", errorNode.get("message").asText(),
+                            errorNode.get("code").asInt());
+                    throw new RequestException(message);
+                }
+                throw new RequestException("Response returned status code " + statusCode + ".");
+            }
+        } catch(IOException exc) {
+            throw new RequestException("Error with the request. Log: " + exc.getMessage());
+        }
+    }
+
     static Coordinate getCoordinateFromJSONArray(JSONArray array) throws JSONException {
         return new Coordinate(array.getDouble(0), array.getDouble(1));
+    }
+
+    static JSONArray getJSONArrayFromCoordinateList(List<Coordinate> coordinateList) {
+        JSONArray jsonArray = new JSONArray();
+        for (Coordinate coordinate : coordinateList)
+            jsonArray.put(getCoordinateJSONArray(coordinate));
+        return jsonArray;
     }
 
     static boolean isOutInterval(int value, int start, int end) {
