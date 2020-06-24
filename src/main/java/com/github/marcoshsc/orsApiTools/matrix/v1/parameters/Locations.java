@@ -1,4 +1,4 @@
-package com.github.marcoshsc.orsApiTools.matrix.parameters;
+package com.github.marcoshsc.orsApiTools.matrix.v1.parameters;
 
 import com.github.marcoshsc.orsApiTools.general.enums.ORSEnum;
 import com.github.marcoshsc.orsApiTools.general.superclasses.CoordinateListParameter;

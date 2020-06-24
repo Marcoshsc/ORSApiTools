@@ -3,7 +3,7 @@ package com.github.marcoshsc.orsApiTools.general;
 import com.github.marcoshsc.orsApiTools.directions.ORSDirectionsRequest;
 import com.github.marcoshsc.orsApiTools.geocode.GeocodeSearchRequest;
 import com.github.marcoshsc.orsApiTools.isochrones.IsochronesRequest;
-import com.github.marcoshsc.orsApiTools.matrix.ORSMatrixRequest;
+import com.github.marcoshsc.orsApiTools.matrix.v1.ORSMatrixRequest;
 import com.github.marcoshsc.orsApiTools.optimization.OptimizationRequest;
 import com.github.marcoshsc.orsApiTools.pois.PoisRequest;
 

@@ -1,7 +1,7 @@
-package com.github.marcoshsc.orsApiTools.matrix;
+package com.github.marcoshsc.orsApiTools.matrix.v1;
 
-import com.github.marcoshsc.orsApiTools.matrix.helperclasses.LocationDescription;
-import com.github.marcoshsc.orsApiTools.matrix.helperclasses.MatrixRequestOptions;
+import com.github.marcoshsc.orsApiTools.matrix.v1.helperclasses.LocationDescription;
+import com.github.marcoshsc.orsApiTools.matrix.v1.helperclasses.MatrixRequestOptions;
 
 import java.util.List;
 

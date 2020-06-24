@@ -1,6 +1,5 @@
 package com.github.marcoshsc.orsApiTools.isochrones;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.marcoshsc.orsApiTools.directions.enums.EnumProfile;
 import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
@@ -43,7 +42,6 @@ public class IsochronesRequest implements Request<IsochronesResponse> {
         builder.addBaseUrl("https://api.openrouteservice.org/v2/isochrones");
         builder.addPathParam(profile);
         String json = new ObjectMapper().writeValueAsString(parameters);
-        System.out.println(json);
         return UtilityFunctions.postHttpRequest(builder.build(), json, headers);
     }
 

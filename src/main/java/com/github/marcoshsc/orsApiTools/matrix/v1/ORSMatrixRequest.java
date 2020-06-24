@@ -1,4 +1,4 @@
-package com.github.marcoshsc.orsApiTools.matrix;
+package com.github.marcoshsc.orsApiTools.matrix.v1;
 
 import com.github.marcoshsc.orsApiTools.directions.enums.EnumMetrics;
 import com.github.marcoshsc.orsApiTools.general.ORSJSONProcessor;
@@ -8,11 +8,11 @@ import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
 import com.github.marcoshsc.orsApiTools.general.interfaces.Request;
 import com.github.marcoshsc.orsApiTools.general.parameters.ApiKey;
 import com.github.marcoshsc.orsApiTools.general.superclasses.JSONProcessingContext;
-import com.github.marcoshsc.orsApiTools.matrix.errorhandlers.MatrixStatusCodeHandler;
-import com.github.marcoshsc.orsApiTools.matrix.helperclasses.MatrixRequestOptions;
-import com.github.marcoshsc.orsApiTools.matrix.parameters.Destinations;
-import com.github.marcoshsc.orsApiTools.matrix.parameters.Locations;
-import com.github.marcoshsc.orsApiTools.matrix.parameters.Sources;
+import com.github.marcoshsc.orsApiTools.matrix.v1.errorhandlers.MatrixStatusCodeHandler;
+import com.github.marcoshsc.orsApiTools.matrix.v1.helperclasses.MatrixRequestOptions;
+import com.github.marcoshsc.orsApiTools.matrix.v1.parameters.Destinations;
+import com.github.marcoshsc.orsApiTools.matrix.v1.parameters.Locations;
+import com.github.marcoshsc.orsApiTools.matrix.v1.parameters.Sources;
 import com.github.marcoshsc.orsApiTools.urlUtils.UrlBuilder;
 import com.github.marcoshsc.orsApiTools.utils.ConcreteStatusCodeHandler;
 import com.github.marcoshsc.orsApiTools.utils.UtilityFunctions;

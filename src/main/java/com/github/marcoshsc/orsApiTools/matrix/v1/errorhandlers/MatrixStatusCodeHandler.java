@@ -1,4 +1,4 @@
-package com.github.marcoshsc.orsApiTools.matrix.errorhandlers;
+package com.github.marcoshsc.orsApiTools.matrix.v1.errorhandlers;
 
 import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
 import com.github.marcoshsc.orsApiTools.utils.interfaces.StatusCodeHandlerStrategy;

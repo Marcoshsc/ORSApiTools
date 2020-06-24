@@ -1,9 +1,9 @@
-package com.github.marcoshsc.orsApiTools.matrix;
+package com.github.marcoshsc.orsApiTools.matrix.v1;
 
 import com.github.marcoshsc.orsApiTools.general.parameters.*;
 import com.github.marcoshsc.orsApiTools.interfaces.ParameterList;
 import com.github.marcoshsc.orsApiTools.interfaces.QueryParameter;
-import com.github.marcoshsc.orsApiTools.matrix.parameters.*;
+import com.github.marcoshsc.orsApiTools.matrix.v1.parameters.*;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

@@ -18,9 +18,9 @@ com.github.marcoshsc.orsApiTools.geocode.parameters
 com.github.marcoshsc.orsApiTools.geocode.superclasses
 com.github.marcoshsc.orsApiTools.interfaces
 com.github.marcoshsc.orsApiTools.matrix
-com.github.marcoshsc.orsApiTools.matrix.errorhandlers
-com.github.marcoshsc.orsApiTools.matrix.helperclasses
-com.github.marcoshsc.orsApiTools.matrix.parameters
+com.github.marcoshsc.orsApiTools.matrix.v1.errorhandlers
+com.github.marcoshsc.orsApiTools.matrix.v1.helperclasses
+com.github.marcoshsc.orsApiTools.matrix.v1.parameters
 com.github.marcoshsc.orsApiTools.optimization
 com.github.marcoshsc.orsApiTools.optimization.enums
 com.github.marcoshsc.orsApiTools.optimization.handlers

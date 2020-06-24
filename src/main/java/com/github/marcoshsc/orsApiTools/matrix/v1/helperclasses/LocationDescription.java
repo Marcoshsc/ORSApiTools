@@ -1,4 +1,4 @@
-package com.github.marcoshsc.orsApiTools.matrix.helperclasses;
+package com.github.marcoshsc.orsApiTools.matrix.v1.helperclasses;
 
 import org.locationtech.jts.geom.Coordinate;
 
