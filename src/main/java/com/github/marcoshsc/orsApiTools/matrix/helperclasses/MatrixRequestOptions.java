@@ -1,4 +1,4 @@
-package com.github.marcoshsc.orsApiTools.matrix.v1.helperclasses;
+package com.github.marcoshsc.orsApiTools.matrix.helperclasses;
 
 import com.github.marcoshsc.orsApiTools.directions.enums.EnumProfile;
 import com.github.marcoshsc.orsApiTools.directions.enums.UnitsEnum;
@@ -37,6 +37,9 @@ public class MatrixRequestOptions {
     public MatrixRequestOptions(EnumProfile profile, UnitsEnum units) {
         this.profile = profile;
         this.units = units;
+    }
+
+    public MatrixRequestOptions() {
     }
 
     public EnumProfile getProfile() {

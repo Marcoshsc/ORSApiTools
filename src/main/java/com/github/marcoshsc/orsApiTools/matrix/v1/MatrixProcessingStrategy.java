@@ -4,7 +4,7 @@ import com.github.marcoshsc.orsApiTools.directions.enums.EnumProfile;
 import com.github.marcoshsc.orsApiTools.directions.enums.UnitsEnum;
 import com.github.marcoshsc.orsApiTools.general.interfaces.JSONProcessingStrategy;
 import com.github.marcoshsc.orsApiTools.matrix.v1.helperclasses.LocationDescription;
-import com.github.marcoshsc.orsApiTools.matrix.v1.helperclasses.MatrixRequestOptions;
+import com.github.marcoshsc.orsApiTools.matrix.helperclasses.MatrixRequestOptions;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

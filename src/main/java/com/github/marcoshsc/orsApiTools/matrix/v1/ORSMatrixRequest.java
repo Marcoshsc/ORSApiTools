@@ -8,8 +8,9 @@ import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
 import com.github.marcoshsc.orsApiTools.general.interfaces.Request;
 import com.github.marcoshsc.orsApiTools.general.parameters.ApiKey;
 import com.github.marcoshsc.orsApiTools.general.superclasses.JSONProcessingContext;
+import com.github.marcoshsc.orsApiTools.matrix.MatrixUtilityMethods;
 import com.github.marcoshsc.orsApiTools.matrix.v1.errorhandlers.MatrixStatusCodeHandler;
-import com.github.marcoshsc.orsApiTools.matrix.v1.helperclasses.MatrixRequestOptions;
+import com.github.marcoshsc.orsApiTools.matrix.helperclasses.MatrixRequestOptions;
 import com.github.marcoshsc.orsApiTools.matrix.v1.parameters.Destinations;
 import com.github.marcoshsc.orsApiTools.matrix.v1.parameters.Locations;
 import com.github.marcoshsc.orsApiTools.matrix.v1.parameters.Sources;
@@ -84,32 +85,14 @@ public class ORSMatrixRequest implements Request<MatrixResponse> {
         boolean hasDistances = parameters.getMetrics().getTypedValue().contains(EnumMetrics.DISTANCE),
                 hasDurations = parameters.getMetrics().getTypedValue().contains(EnumMetrics.DURATION);
         if(hasDistances)
-            verifyMatrix(res.getDistances(), sources, destinations);
+            MatrixUtilityMethods.verifyMatrix(res.getDistances(), sources, destinations);
         if(hasDurations)
-            verifyMatrix(res.getDurations(), sources, destinations);
+            MatrixUtilityMethods.verifyMatrix(res.getDurations(), sources, destinations);
         MatrixRequestOptions options = res.getOptions();
         options.setLocations(locations);
         options.setSources(sources);
         options.setDestinations(destinations);
         return res;
-    }
-
-    private void verifyMatrix(List<List<Double>> matrix, List<Integer> sources, List<Integer> destinations) throws RequestException {
-        int matrixRows = matrix.size();
-        int rows = sources.size();
-        int columns = destinations.size();
-        if(rows != matrixRows) {
-            throw new RequestException(String.format("ORS Api error. The size of the matrix does not match with " +
-                    "the size of the given parameters. Matrix rows: %d, Source rows: %d.", matrixRows, rows));
-        }
-        for (List<Double> list : matrix) {
-            int matrixColumns = list.size();
-            if(columns != matrixColumns) {
-                throw new RequestException(String.format("ORS Api error. The size of the matrix does not match " +
-                                "with the size of the given parameters. Matrix columns: %d, Destination columns: %d.",
-                        matrixColumns, columns));
-            }
-        }
     }
 
     /**
@@ -226,19 +209,12 @@ public class ORSMatrixRequest implements Request<MatrixResponse> {
     }
 
     private void configureParameters(List<Coordinate> outerList, List<Coordinate> innerList) {
-        List<Coordinate> concatenatedList = concatLists(outerList, innerList);
+        List<Coordinate> concatenatedList = MatrixUtilityMethods.concatLists(outerList, innerList);
         List<Integer> sourceIndexes = UtilityFunctions.getIntegerList(0, outerList.size());
         List<Integer> destinationIndexes = UtilityFunctions.getIntegerList(outerList.size(), innerList.size() + outerList.size());
         parameters.setLocations(new Locations(concatenatedList));
         parameters.setSources(new Sources(sourceIndexes));
         parameters.setDestinations(new Destinations(destinationIndexes));
-    }
-
-    private List<Coordinate> concatLists(List<Coordinate> l1, List<Coordinate> l2) {
-        List<Coordinate> concatenatedList = new ArrayList<>();
-        concatenatedList.addAll(l1);
-        concatenatedList.addAll(l2);
-        return concatenatedList;
     }
 
     /**

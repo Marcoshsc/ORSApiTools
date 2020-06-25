@@ -4,6 +4,7 @@ import com.github.marcoshsc.orsApiTools.directions.ORSDirectionsRequest;
 import com.github.marcoshsc.orsApiTools.geocode.GeocodeSearchRequest;
 import com.github.marcoshsc.orsApiTools.isochrones.IsochronesRequest;
 import com.github.marcoshsc.orsApiTools.matrix.v1.ORSMatrixRequest;
+import com.github.marcoshsc.orsApiTools.matrix.v2.MatrixV2Request;
 import com.github.marcoshsc.orsApiTools.optimization.OptimizationRequest;
 import com.github.marcoshsc.orsApiTools.pois.PoisRequest;
 
@@ -18,6 +19,8 @@ public interface ORSEndpoints {
     static ORSMatrixRequest getMatrix(String apiKey) {
         return new ORSMatrixRequest(apiKey);
     }
+
+    static MatrixV2Request getMatrixV2(String apiKey) { return new MatrixV2Request(apiKey); }
 
     static ORSDirectionsRequest getDirections(String apiKey) {
         return new ORSDirectionsRequest(apiKey);
