@@ -5,9 +5,9 @@ import com.github.marcoshsc.orsApiTools.directions.enums.EnumMetrics;
 import com.github.marcoshsc.orsApiTools.general.exceptions.InvalidParameters;
 import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
 import com.github.marcoshsc.orsApiTools.general.interfaces.Request;
-import com.github.marcoshsc.orsApiTools.matrix.MatrixUtilityMethods;
-import com.github.marcoshsc.orsApiTools.matrix.helperclasses.MatrixRequestOptions;
-import com.github.marcoshsc.orsApiTools.matrix.v2.helperclasses.Location;
+import com.github.marcoshsc.orsApiTools.matrix.general.helperclasses.Location;
+import com.github.marcoshsc.orsApiTools.matrix.general.helperclasses.MatrixRequestOptions;
+import com.github.marcoshsc.orsApiTools.matrix.general.utils.MatrixUtilityMethods;
 import com.github.marcoshsc.orsApiTools.matrix.v2.parameters.Destinations;
 import com.github.marcoshsc.orsApiTools.matrix.v2.parameters.Locations;
 import com.github.marcoshsc.orsApiTools.matrix.v2.parameters.Profile;
@@ -21,7 +21,6 @@ import org.json.JSONException;
 import org.locationtech.jts.geom.Coordinate;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +46,7 @@ public class MatrixV2Request implements Request<MatrixV2Response> {
     public MatrixV2Response makeRequest() throws RequestException, InvalidParameters {
         try {
             return getConfiguratedResponse();
-        } catch (UnsupportedEncodingException | JSONException exc) {
+        } catch (JSONException exc) {
             throw new RequestException(exc.getMessage());
         }
     }
@@ -58,9 +57,8 @@ public class MatrixV2Request implements Request<MatrixV2Response> {
      * @throws RequestException if something goes wrong with the response.
      * @throws InvalidParameters if something goes wrong with the parameters. See verifyErrors method.
      * @throws JSONException if some JSON parsing error was encountered.
-     * @throws UnsupportedEncodingException if some character in the URL built could not be encoded.
      */
-    private MatrixV2Response getConfiguratedResponse() throws RequestException, InvalidParameters, JSONException, UnsupportedEncodingException {
+    private MatrixV2Response getConfiguratedResponse() throws RequestException, InvalidParameters, JSONException {
         Profile profile = parameters.getProfile();
         if(profile == null) throw new InvalidParameters("No profile was provided.");
         List<Coordinate> locations = new ArrayList<>(parameters.getLocations().getLocations());
@@ -88,13 +86,11 @@ public class MatrixV2Request implements Request<MatrixV2Response> {
     /**
      * Makes possible to handle more than 3500 positions in the final matrix. It looks at the location coordinates, if
      * its size is lower than 60, make a single request and return the response. Otherwise, it will call a separated
-     * method, which will split the coordinates into smaller groups, make separated request, and group them all together
+     * method, which will split the coordinates into smaller groups, make separated requests, and group them all together
      * at the end, returning a equivalent final response.
      * @return final response referent to the parameters received.
      * @throws RequestException if something goes wrong with the request.
-     * @throws InvalidParameters if something goes wrong with the parameters. See verifyErrors method.
      * @throws JSONException if some JSON parsing error was encountered.
-     * @throws UnsupportedEncodingException if some character in the URL built could not be encoded.
      */
     private MatrixV2Response handleMultipleCoordinates() throws RequestException, JSONException{
         if(isHandledBySingleRequest())
@@ -139,9 +135,6 @@ public class MatrixV2Request implements Request<MatrixV2Response> {
         for (Integer destinationIndex : destinationIndexes) {
             destinations.add(locations.getLocations().get(destinationIndex));
         }
-//        MatrixV2Response finalResponse = null;
-//        int sourceFinalLength = sources.size() % 59;
-//        int destinationFinalLength = destinations.size() % 59;
         return sources.size() <= destinations.size() ?
                 getResponse(sources, destinations) : 
                 transposeResponse(getResponse(destinations, sources));
@@ -163,35 +156,11 @@ public class MatrixV2Request implements Request<MatrixV2Response> {
     }
 
     private MatrixV2Response transposeResponse(MatrixV2Response response) {
-        List<List<Double>> newDurations = getNewDurations(response);
-        List<List<Double>> newDistances = getNewDistances(response);
+        List<List<Double>> newDurations = MatrixUtilityMethods.getNewDurations(response);
+        List<List<Double>> newDistances = MatrixUtilityMethods.getNewDistances(response);
         List<Location> newSources = response.getDestinations();
         List<Location> newDestinations = response.getSources();
         return new MatrixV2Response(newDurations, newDistances, newSources, newDestinations);
-    }
-
-    private List<List<Double>> getNewDurations(MatrixV2Response response) {
-        if(response.getDurations() == null) return null;
-        List<List<Double>> durations = response.getDurations();
-        return transposeMatrix(response, durations);
-    }
-
-    private List<List<Double>> getNewDistances(MatrixV2Response response) {
-        if(response.getDistances() == null) return null;
-        List<List<Double>> distances = response.getDistances();
-        return transposeMatrix(response, distances);
-    }
-
-    private List<List<Double>> transposeMatrix(MatrixV2Response response, List<List<Double>> durations) {
-        List<List<Double>> newDurations = new ArrayList<>();
-        for (int i = 0; i < response.getDestinations().size(); i++) {
-            newDurations.add(new ArrayList<>());
-        }
-        for (List<Double> row : durations) {
-            for (int j = 0; j < row.size(); j++)
-                newDurations.get(j).add(row.get(j));
-        }
-        return newDurations;
     }
 
     /**
@@ -221,36 +190,14 @@ public class MatrixV2Request implements Request<MatrixV2Response> {
                 finalResponse = makeSimpleRequest();
             else {
                 if (currentIndex == 0)
-                    MatrixV2Response.concatNewLine(finalResponse, makeSimpleRequest());
+                    finalResponse.concatNewLine(makeSimpleRequest());
                 else
-                    MatrixV2Response.concatNewColumns(finalResponse, makeSimpleRequest());
+                    finalResponse.concatNewColumns(makeSimpleRequest());
+                finalResponse.incrementCounter();
             }
             currentIndex = currentListSize;
         }
         return finalResponse;
-//        if(destinationFinalLength == destinations.size()) {
-//            configureParameters(outerList, destinations);
-//            if(finalResponse == null) return makeSimpleRequest();
-//            MatrixV2Response.concatNewLine(finalResponse, makeSimpleRequest());
-//            return finalResponse;
-//        }
-//        for (int j = 0; j < destinations.size() - destinationFinalLength; j += 59) {
-//            List<Coordinate> innerList = destinations.subList(j, j + 59);
-//            configureParameters(outerList, innerList);
-//            if(finalResponse == null)
-//                finalResponse = makeSimpleRequest();
-//            else {
-//                if(j == 0)
-//                    MatrixV2Response.concatNewLine(finalResponse, makeSimpleRequest());
-//                else
-//                    MatrixV2Response.concatNewColumns(finalResponse, makeSimpleRequest());
-//            }
-//        }
-//        if(destinationFinalLength != 0) {
-//            List<Coordinate> innerList = destinations.subList(destinations.size() - destinationFinalLength, destinations.size());
-//            configureParameters(outerList, innerList);
-//            MatrixV2Response.concatNewColumns(finalResponse, makeSimpleRequest());
-//        }
     }
 
     private void configureParameters(List<Coordinate> outerList, List<Coordinate> innerList) {

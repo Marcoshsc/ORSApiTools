@@ -1,4 +1,4 @@
-package com.github.marcoshsc.orsApiTools.matrix.helperclasses;
+package com.github.marcoshsc.orsApiTools.matrix.general.helperclasses;
 
 import com.github.marcoshsc.orsApiTools.directions.enums.EnumProfile;
 import com.github.marcoshsc.orsApiTools.directions.enums.UnitsEnum;

@@ -1,4 +1,4 @@
-package com.github.marcoshsc.orsApiTools.matrix.v2.helperclasses;
+package com.github.marcoshsc.orsApiTools.matrix.general.helperclasses;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

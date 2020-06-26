@@ -677,16 +677,17 @@ public class MatrixV2Test {
         req.getParameters().setMetrics(new Metrics(Arrays.asList(EnumMetrics.values())));
         req.getParameters().setResolveLocations(new ResolveLocations(true));
 //        req.getParameters().setSources(new Sources(new Integer[] {8,9,10,11,12,13,14,15,16,17}));
-        List<Integer> sourceIndexes = UtilityFunctions.getIntegerList(0, 80);
+        List<Integer> sourceIndexes = UtilityFunctions.getIntegerList(0, 65);
         System.out.println(UtilityFunctions.getIntegerJSONArray(sourceIndexes));
         req.getParameters().setSources(new Sources(sourceIndexes));
 //        req.getParameters().setDestinations(new Destinations(new Integer[] {0,1,2,3,4,5,6,7}));
-        List<Integer> destinationIndexes = UtilityFunctions.getIntegerList(70, 120/*req.getParameters().getLocations().getLocations().size()*/);
+        List<Integer> destinationIndexes = UtilityFunctions.getIntegerList(0, 65/*req.getParameters().getLocations().getLocations().size()*/);
         System.out.println(UtilityFunctions.getIntegerJSONArray(destinationIndexes));
         req.getParameters().setDestinations(new Destinations(destinationIndexes));
 //        req.getParameters().setSources(new Sources(req.getParameters().getLocations().getTypedValue().subList(0, 3)));
 //        try {
         MatrixV2Response res = req.makeRequest();
+        System.out.println(res.getRequestCounter() + " Requests");
         int rows = res.getDistances().size();
         Assert.assertEquals(rows, sourceIndexes.size());
         for (List<Double> distances : res.getDistances())

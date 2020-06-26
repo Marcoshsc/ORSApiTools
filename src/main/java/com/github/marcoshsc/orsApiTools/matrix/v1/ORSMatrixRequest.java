@@ -1,16 +1,17 @@
 package com.github.marcoshsc.orsApiTools.matrix.v1;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.marcoshsc.orsApiTools.directions.enums.EnumMetrics;
-import com.github.marcoshsc.orsApiTools.general.ORSJSONProcessor;
 import com.github.marcoshsc.orsApiTools.general.enums.ORSEnum;
 import com.github.marcoshsc.orsApiTools.general.exceptions.InvalidParameters;
 import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
 import com.github.marcoshsc.orsApiTools.general.interfaces.Request;
 import com.github.marcoshsc.orsApiTools.general.parameters.ApiKey;
-import com.github.marcoshsc.orsApiTools.general.superclasses.JSONProcessingContext;
-import com.github.marcoshsc.orsApiTools.matrix.MatrixUtilityMethods;
+import com.github.marcoshsc.orsApiTools.matrix.general.helperclasses.Location;
+import com.github.marcoshsc.orsApiTools.matrix.general.helperclasses.MatrixRequestOptions;
+import com.github.marcoshsc.orsApiTools.matrix.general.utils.MatrixUtilityMethods;
 import com.github.marcoshsc.orsApiTools.matrix.v1.errorhandlers.MatrixStatusCodeHandler;
-import com.github.marcoshsc.orsApiTools.matrix.helperclasses.MatrixRequestOptions;
 import com.github.marcoshsc.orsApiTools.matrix.v1.parameters.Destinations;
 import com.github.marcoshsc.orsApiTools.matrix.v1.parameters.Locations;
 import com.github.marcoshsc.orsApiTools.matrix.v1.parameters.Sources;
@@ -38,8 +39,8 @@ import java.util.Map;
  * @author Marcos Henrique
  */
 public class ORSMatrixRequest implements Request<MatrixResponse> {
-    private MatrixParameters parameters = new MatrixParameters();
-    private Map<String, String> headers = new HashMap<>();
+    private final MatrixParameters parameters = new MatrixParameters();
+    private final Map<String, String> headers = new HashMap<>();
 
     /**
      * Just a API key is needed to construct the class
@@ -62,7 +63,7 @@ public class ORSMatrixRequest implements Request<MatrixResponse> {
     public MatrixResponse makeRequest() throws RequestException, InvalidParameters {
         try {
             return getConfiguratedResponse();
-        } catch (UnsupportedEncodingException | JSONException exc) {
+        } catch (UnsupportedEncodingException | JSONException | JsonProcessingException exc) {
             throw new RequestException(exc.getMessage());
         }
     }
@@ -75,7 +76,7 @@ public class ORSMatrixRequest implements Request<MatrixResponse> {
      * @throws JSONException if some JSON parsing error was encountered.
      * @throws UnsupportedEncodingException if some character in the URL built could not be encoded.
      */
-    private MatrixResponse getConfiguratedResponse() throws RequestException, InvalidParameters, JSONException, UnsupportedEncodingException {
+    private MatrixResponse getConfiguratedResponse() throws RequestException, InvalidParameters, JSONException, UnsupportedEncodingException, JsonProcessingException {
         List<Coordinate> locations = new ArrayList<>(parameters.getLocations().getTypedValue());
         List<Integer> sources = parameters.getSources() != null ? new ArrayList<>(parameters.getSources().getTypedValue()) :
                 UtilityFunctions.getIntegerList(0, locations.size());
@@ -88,10 +89,11 @@ public class ORSMatrixRequest implements Request<MatrixResponse> {
             MatrixUtilityMethods.verifyMatrix(res.getDistances(), sources, destinations);
         if(hasDurations)
             MatrixUtilityMethods.verifyMatrix(res.getDurations(), sources, destinations);
-        MatrixRequestOptions options = res.getOptions();
+        MatrixRequestOptions options = new MatrixRequestOptions();
         options.setLocations(locations);
         options.setSources(sources);
         options.setDestinations(destinations);
+        res.setOptions(options);
         return res;
     }
 
@@ -107,7 +109,7 @@ public class ORSMatrixRequest implements Request<MatrixResponse> {
      * @throws UnsupportedEncodingException if some character in the URL built could not be encoded.
      */
     private MatrixResponse handleMultipleCoordinates() throws RequestException, InvalidParameters, JSONException,
-            UnsupportedEncodingException {
+            UnsupportedEncodingException, JsonProcessingException {
         if(isHandledBySingleRequest())
             return makeSimpleRequest();
         return handleWithSourceAndDestination();
@@ -139,7 +141,7 @@ public class ORSMatrixRequest implements Request<MatrixResponse> {
      * @throws UnsupportedEncodingException if some character in the URL built could not be encoded.
      */
     private MatrixResponse handleWithSourceAndDestination() throws RequestException, InvalidParameters, JSONException,
-            UnsupportedEncodingException {
+            UnsupportedEncodingException, JsonProcessingException {
         Locations locations = parameters.getLocations();
         List<Integer> sourceIndexes = parameters.getSources() != null ? parameters.getSources().getTypedValue() :
                 UtilityFunctions.getIntegerList(0, locations.getTypedValue().size());
@@ -153,25 +155,15 @@ public class ORSMatrixRequest implements Request<MatrixResponse> {
         for (Integer destinationIndex : destinationIndexes) {
             destinations.add(locations.getTypedValue().get(destinationIndex));
         }
-        MatrixResponse finalResponse = null;
-        int sourceFinalLength = sources.size() % 59;
-        int destinationFinalLength = destinations.size() % 59;
-        for (int i = 0; i < sources.size() - sourceFinalLength; i += 59) {
-            List<Coordinate> outerList = sources.subList(i, i + 59);
-            finalResponse = getResponseFromLoop(destinations, finalResponse, destinationFinalLength, outerList);
-        }
-        if(sourceFinalLength != 0) {
-            List<Coordinate> outerList = sources.subList(sources.size() - sourceFinalLength, sources.size());
-            finalResponse = getResponseFromLoop(destinations, finalResponse, destinationFinalLength, outerList);
-        }
-        return finalResponse;
+        return sources.size() <= destinations.size() ?
+                getResponse(sources, destinations) :
+                transposeResponse(getResponse(destinations, sources));
     }
 
     /**
      *
      * @param destinations list of destinations
      * @param finalResponse the matrix response to be returned at the end.
-     * @param destinationFinalLength division module of the size of destinations array by 59.
      * @param outerList list of source coordinates.
      * @return final response.
      * @throws JSONException if some JSON parsing error was encountered.
@@ -180,30 +172,52 @@ public class ORSMatrixRequest implements Request<MatrixResponse> {
      * @throws RequestException if something goes wrong with the request.
      */
     private MatrixResponse getResponseFromLoop(List<Coordinate> destinations, MatrixResponse finalResponse,
-                                               int destinationFinalLength, List<Coordinate> outerList)
-            throws JSONException, InvalidParameters, UnsupportedEncodingException, RequestException {
-        if(destinationFinalLength == destinations.size()) {
-            configureParameters(outerList, destinations);
-            if(finalResponse == null) return makeSimpleRequest();
-            MatrixResponse.concatNewLine(finalResponse, makeSimpleRequest());
-            return finalResponse;
-        }
-        for (int j = 0; j < destinations.size() - destinationFinalLength; j += 59) {
-            List<Coordinate> innerList = destinations.subList(j, j + 59);
-            configureParameters(outerList, innerList);
+                                               List<Coordinate> outerList)
+            throws JSONException, InvalidParameters, UnsupportedEncodingException, RequestException, JsonProcessingException {
+        int outerListSize = outerList.size(), destinationsSize = destinations.size();
+        int currentIndex = 0;
+        while(currentIndex < destinationsSize) {
+            int currentDestinationsSize = 3500 / outerListSize;
+            int currentListSize = currentIndex + currentDestinationsSize;
+            List<Coordinate> currentDestinationList = currentListSize > destinationsSize ?
+                    destinations.subList(currentIndex, destinationsSize) :
+                    destinations.subList(currentIndex, currentListSize);
+            System.out.println(String.format("making request from %d to %d destination coord.", currentIndex,
+                    currentListSize > destinationsSize ? destinationsSize - 1 : currentListSize - 1));
+            configureParameters(outerList, currentDestinationList);
             if(finalResponse == null)
                 finalResponse = makeSimpleRequest();
             else {
-                if(j == 0)
-                    MatrixResponse.concatNewLine(finalResponse, makeSimpleRequest());
+                if (currentIndex == 0)
+                    finalResponse.concatNewLine(makeSimpleRequest());
                 else
-                    MatrixResponse.concatNewColumns(finalResponse, makeSimpleRequest());
+                    finalResponse.concatNewColumns(makeSimpleRequest());
+                finalResponse.incrementCounter();
             }
+            currentIndex = currentListSize;
         }
-        if(destinationFinalLength != 0) {
-            List<Coordinate> innerList = destinations.subList(destinations.size() - destinationFinalLength, destinations.size());
-            configureParameters(outerList, innerList);
-            MatrixResponse.concatNewColumns(finalResponse, makeSimpleRequest());
+        return finalResponse;
+    }
+
+    private MatrixResponse transposeResponse(MatrixResponse response) {
+        List<List<Double>> newDurations = MatrixUtilityMethods.getNewDurations(response);
+        List<List<Double>> newDistances = MatrixUtilityMethods.getNewDistances(response);
+        List<Location> newSources = response.getDestinations();
+        List<Location> newDestinations = response.getSources();
+        return new MatrixResponse(newDurations, newDistances, newSources, newDestinations);
+    }
+
+    private MatrixResponse getResponse(List<Coordinate> sources, List<Coordinate> destinations)
+            throws RequestException, UnsupportedEncodingException, InvalidParameters, JsonProcessingException {
+        MatrixResponse finalResponse = null;
+        int sourceFinalLength = sources.size() % 59;
+        for (int i = 0; i < sources.size() - sourceFinalLength; i += 59) {
+            List<Coordinate> outerList = sources.subList(i, i + 59);
+            finalResponse = getResponseFromLoop(destinations, finalResponse, outerList);
+        }
+        if(sourceFinalLength != 0) {
+            List<Coordinate> outerList = sources.subList(sources.size() - sourceFinalLength, sources.size());
+            finalResponse = getResponseFromLoop(destinations, finalResponse, outerList);
         }
         return finalResponse;
     }
@@ -225,14 +239,13 @@ public class ORSMatrixRequest implements Request<MatrixResponse> {
      * @throws UnsupportedEncodingException if some character in the URL built could not be encoded.
      * @throws RequestException if something goes wrong with the request.
      */
-    private MatrixResponse makeSimpleRequest() throws JSONException, InvalidParameters,
-            UnsupportedEncodingException, RequestException {
+    private MatrixResponse makeSimpleRequest() throws InvalidParameters,
+            UnsupportedEncodingException, RequestException, JsonProcessingException {
         verifyErrors();
         String URL = buildURL();
         StatusCodeHandlerContext statusCodeContext = new ConcreteStatusCodeHandler(new MatrixStatusCodeHandler());
         JSONObject responseJSON = UtilityFunctions.makeHTTPRequest(URL, headers, statusCodeContext);
-        JSONProcessingContext<MatrixResponse> context = new ORSJSONProcessor<>(new MatrixProcessingStrategy());
-        return context.processJSON(responseJSON);
+        return new ObjectMapper().readValue(responseJSON.toString(), MatrixResponse.class);
     }
 
     /**

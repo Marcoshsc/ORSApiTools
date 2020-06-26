@@ -24,7 +24,7 @@ public class MatrixTest {
     @Test
     public void simpleTest() throws InvalidParameters, RequestException, IOException {
         ORSMatrixRequest req = ORSEndpoints.getMatrix(ApiKeyGetter.getApiKey());
-        req.getParameters().setProfile(new Profile(EnumProfile.DRIVING_CAR));
+        req.getParameters().setProfile(new Profile(EnumProfile.FOOT_WALKING));
         req.getParameters().setLocations(new Locations(Arrays.asList(
                 new Coordinate(-40.76612, -19.247029),
                 new Coordinate(-40.704441, -19.288167),
@@ -678,13 +678,13 @@ public class MatrixTest {
         req.getParameters().setMetrics(new Metrics(Arrays.asList(EnumMetrics.values())));
         req.getParameters().setResolveLocations(new ResolveLocations(true));
 //        req.getParameters().setSources(new Sources(new Integer[] {8,9,10,11,12,13,14,15,16,17}));
-        List<Integer> sourceIndexes = UtilityFunctions.getIntegerList(0, 1);
+        List<Integer> sourceIndexes = UtilityFunctions.getIntegerList(0, 641);
         System.out.println(UtilityFunctions.getIntegerJSONArray(sourceIndexes));
-        req.getParameters().setSources(new Sources(sourceIndexes));
+//        req.getParameters().setSources(new Sources(sourceIndexes));
 //        req.getParameters().setDestinations(new Destinations(new Integer[] {0,1,2,3,4,5,6,7}));
-        List<Integer> destinationIndexes = UtilityFunctions.getIntegerList(1, req.getParameters().getLocations().getTypedValue().size());
+        List<Integer> destinationIndexes = UtilityFunctions.getIntegerList(0, req.getParameters().getLocations().getTypedValue().size());
         System.out.println(UtilityFunctions.getIntegerJSONArray(destinationIndexes));
-        req.getParameters().setDestinations(new Destinations(destinationIndexes));
+//        req.getParameters().setDestinations(new Destinations(destinationIndexes));
 //        req.getParameters().setSources(new Sources(req.getParameters().getLocations().getTypedValue().subList(0, 3)));
 //        try {
         MatrixResponse res = req.makeRequest();

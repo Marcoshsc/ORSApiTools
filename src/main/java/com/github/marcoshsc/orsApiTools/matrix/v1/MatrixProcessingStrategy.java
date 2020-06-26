@@ -3,8 +3,8 @@ package com.github.marcoshsc.orsApiTools.matrix.v1;
 import com.github.marcoshsc.orsApiTools.directions.enums.EnumProfile;
 import com.github.marcoshsc.orsApiTools.directions.enums.UnitsEnum;
 import com.github.marcoshsc.orsApiTools.general.interfaces.JSONProcessingStrategy;
+import com.github.marcoshsc.orsApiTools.matrix.general.helperclasses.MatrixRequestOptions;
 import com.github.marcoshsc.orsApiTools.matrix.v1.helperclasses.LocationDescription;
-import com.github.marcoshsc.orsApiTools.matrix.helperclasses.MatrixRequestOptions;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +38,8 @@ public class MatrixProcessingStrategy implements JSONProcessingStrategy<MatrixRe
         List<LocationDescription> destinations = getLocationDescriptions(destinationsJSONArray);
         JSONObject queryInfo = obj.getJSONObject("info").getJSONObject("query");
         MatrixRequestOptions options = getOptions(queryInfo);
-        return new MatrixResponse(distances, durations, sources, destinations, options);
+        return null;
+//        return new MatrixResponse(distances, durations, sources, destinations/*, options*/);
     }
 
     /**

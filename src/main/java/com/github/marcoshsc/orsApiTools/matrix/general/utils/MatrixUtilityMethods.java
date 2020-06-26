@@ -1,6 +1,7 @@
-package com.github.marcoshsc.orsApiTools.matrix;
+package com.github.marcoshsc.orsApiTools.matrix.general.utils;
 
 import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
+import com.github.marcoshsc.orsApiTools.matrix.general.superclasses.AbstractMatrixResponse;
 import org.locationtech.jts.geom.Coordinate;
 
 import java.util.ArrayList;
@@ -25,6 +26,30 @@ public class MatrixUtilityMethods {
                         matrixColumns, columns));
             }
         }
+    }
+
+    public static List<List<Double>> getNewDurations(AbstractMatrixResponse response) {
+        if(response.getDurations() == null) return null;
+        List<List<Double>> durations = response.getDurations();
+        return transposeMatrix(response, durations);
+    }
+
+    public static List<List<Double>> getNewDistances(AbstractMatrixResponse response) {
+        if(response.getDistances() == null) return null;
+        List<List<Double>> distances = response.getDistances();
+        return transposeMatrix(response, distances);
+    }
+
+    private static List<List<Double>> transposeMatrix(AbstractMatrixResponse response, List<List<Double>> durations) {
+        List<List<Double>> newDurations = new ArrayList<>();
+        for (int i = 0; i < response.getDestinations().size(); i++) {
+            newDurations.add(new ArrayList<>());
+        }
+        for (List<Double> row : durations) {
+            for (int j = 0; j < row.size(); j++)
+                newDurations.get(j).add(row.get(j));
+        }
+        return newDurations;
     }
 
     public static List<Coordinate> concatLists(List<Coordinate> l1, List<Coordinate> l2) {
