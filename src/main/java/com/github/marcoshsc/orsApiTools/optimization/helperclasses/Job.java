@@ -1,9 +1,13 @@
 package com.github.marcoshsc.orsApiTools.optimization.helperclasses;
 
-import com.github.marcoshsc.orsApiTools.interfaces.JSONRepresentation;
-import com.github.marcoshsc.orsApiTools.utils.UtilityFunctions;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.github.marcoshsc.orsApiTools.json.serializers.CoordinateSerializer;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.locationtech.jts.geom.Coordinate;
 
 import java.util.List;
@@ -13,119 +17,74 @@ import java.util.List;
  *
  * @author Marcos Henrique
  */
-public class Job implements JSONRepresentation {
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+public class Job {
 
     /**
      * unique identifier, must not be null.
      */
-    private int id;
+    @JsonProperty("id")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer id;
+
     /**
      * location of the job.
      */
+    @JsonProperty("location")
+    @JsonSerialize(using = CoordinateSerializer.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Coordinate location;
+
     /**
      * the index of the location in the matrix passed. it's only allowed when an matrix is present in the request.
      */
+    @JsonProperty("location_index")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer locationIndex;
+
     /**
      * Total time spent in the job.
      */
-    private int service;
+    @JsonProperty("service")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer service;
+
     /**
      * Array of delivery quantities.
      */
+    @JsonProperty("delivery")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Integer> delivery;
+
     /**
      * Array of pickup quantities.
      */
+    @JsonProperty("pickup")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Integer> pickup;
+
     /**
      * Array of skills needed to do the job.
      */
+    @JsonProperty("skills")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Integer> skills;
+
     /**
      * Priority of the job, [0,100].
      */
+    @JsonProperty("priority")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer priority;
+
     /**
      * List of time windows, which are the periods of time that the job can be started.
      */
+    @JsonProperty("time_windows")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<TimeWindow> timeWindows;
 
-    public Job(int id, Coordinate location, Integer locationIndex, int service, List<Integer> delivery,
-               List<Integer> pickup, List<Integer> skills, Integer priority, List<TimeWindow> timeWindows) {
-        this.id = id;
-        this.location = location;
-        this.locationIndex = locationIndex;
-        this.service = service;
-        this.delivery = delivery;
-        this.pickup = pickup;
-        this.skills = skills;
-        this.priority = priority;
-        this.timeWindows = timeWindows;
-    }
-
-    /**
-     *
-     * @return an JSON representation of the job class.
-     * @throws JSONException if some JSON parsing error happened.
-     */
-    @Override
-    public JSONObject getJSONRepresentation() throws JSONException {
-        JSONObject obj = new JSONObject();
-        obj.put("id", id);
-        if(location != null)
-            obj.put("location", UtilityFunctions.getCoordinateJSONArray(location));
-        if(locationIndex != null)
-            obj.put("location_index", locationIndex.intValue());
-        if(service != 0)
-            obj.put("service", service);
-        if(delivery != null)
-            obj.put("delivery", UtilityFunctions.getIntegerJSONArray(delivery));
-        if(pickup != null)
-            obj.put("pickup", UtilityFunctions.getIntegerJSONArray(pickup));
-        if(skills != null)
-            obj.put("skills", UtilityFunctions.getIntegerJSONArray(skills));
-        if(priority != null)
-            obj.put("priority", priority.intValue());
-        if(timeWindows != null)
-            obj.put("time_windows", UtilityFunctions.getJSONArrayFromTimeWindowList(timeWindows));
-        return obj;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public Coordinate getLocation() {
-        return location;
-    }
-
-    public Integer getLocationIndex() {
-        return locationIndex;
-    }
-
-    public int getService() {
-        return service;
-    }
-
-    public List<Integer> getDelivery() {
-        return delivery;
-    }
-
-    public List<Integer> getPickup() {
-        return pickup;
-    }
-
-    public List<Integer> getSkills() {
-        return skills;
-    }
-
-    public Integer getPriority() {
-        return priority;
-    }
-
-    public List<TimeWindow> getTimeWindows() {
-        return timeWindows;
-    }
 }

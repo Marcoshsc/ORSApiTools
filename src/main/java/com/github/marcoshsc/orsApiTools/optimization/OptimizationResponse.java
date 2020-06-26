@@ -1,8 +1,12 @@
 package com.github.marcoshsc.orsApiTools.optimization;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.marcoshsc.orsApiTools.optimization.helperclasses.Route;
 import com.github.marcoshsc.orsApiTools.optimization.helperclasses.Summary;
 import com.github.marcoshsc.orsApiTools.optimization.helperclasses.Unassigned;
+import lombok.Getter;
 
 import java.util.List;
 
@@ -12,56 +16,46 @@ import java.util.List;
  *
  * @author Marcos Henrique
  */
+@Getter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OptimizationResponse {
 
     /**
      * Code of the request, to be used in error handling.
      */
-    private int code;
+    private final Integer code;
+
     /**
      * Error message (present iff code is different from 0).
      */
-    private String errorMessage;
+    private final String errorMessage;
+
     /**
      * Object summarizing solution indicators.
      */
-    private Summary summary;
+    private final Summary summary;
+
     /**
      * Array of objects describing unassigned jobs with their id and location (if provided).
      */
-    private List<Unassigned> unassigned;
+    private final List<Unassigned> unassigned;
+
     /**
      * Array of route objects.
      */
-    private List<Route> routes;
+    private final List<Route> routes;
 
-    public OptimizationResponse(int code, String errorMessage, Summary summary, List<Unassigned> unassigned,
-                                List<Route> routes) {
+    @JsonCreator
+    public OptimizationResponse(@JsonProperty(value = "code", required = true) Integer code,
+                                @JsonProperty("error") String errorMessage,
+                                @JsonProperty("summary") Summary summary,
+                                @JsonProperty(value = "unassigned", required = true) List<Unassigned> unassigned,
+                                @JsonProperty(value = "routes", required = true) List<Route> routes) {
         this.code = code;
         this.errorMessage = errorMessage;
         this.summary = summary;
         this.unassigned = unassigned;
         this.routes = routes;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public Summary getSummary() {
-        return summary;
-    }
-
-    public List<Unassigned> getUnassigned() {
-        return unassigned;
-    }
-
-    public List<Route> getRoutes() {
-        return routes;
     }
 
     @Override

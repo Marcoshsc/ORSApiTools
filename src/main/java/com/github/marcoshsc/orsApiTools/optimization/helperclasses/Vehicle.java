@@ -1,11 +1,14 @@
 package com.github.marcoshsc.orsApiTools.optimization.helperclasses;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.github.marcoshsc.orsApiTools.directions.enums.EnumProfile;
-import com.github.marcoshsc.orsApiTools.interfaces.JSONRepresentation;
-import com.github.marcoshsc.orsApiTools.utils.UtilityFunctions;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.github.marcoshsc.orsApiTools.json.serializers.CoordinateSerializer;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.locationtech.jts.geom.Coordinate;
 
 import java.util.List;
@@ -15,136 +18,82 @@ import java.util.List;
  *
  * @author Marcos Henrique
  */
-public class Vehicle implements JSONRepresentation {
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+public class Vehicle {
 
     /**
      * Unique Identifier.
      */
-    private int id;
+    @JsonProperty("id")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer id;
+
     /**
      * Routing profile (defaults to car)
      */
+    @JsonProperty("profile")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private EnumProfile profile;
+
     /**
      * Coordinates array
      */
+    @JsonProperty("start")
+    @JsonSerialize(using = CoordinateSerializer.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Coordinate start;
+
     /**
      * Index of relevant row and column in custom matrix
      */
+    @JsonProperty("start_index")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer startIndex;
+
     /**
      * Coordinates array
      */
+    @JsonProperty("end")
+    @JsonSerialize(using = CoordinateSerializer.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Coordinate end;
+
     /**
      * Index of relevant row and column in custom matrix
      */
+    @JsonProperty("end_index")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer endIndex;
+
     /**
      * An array of integers describing multidimensional quantities
      */
+    @JsonProperty("capacity")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Integer> capacity;
+
     /**
      * An array of integers defining skills
      */
+    @JsonProperty("skills")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Integer> skills;
+
     /**
      * A time_window object describing working hours
      */
+    @JsonProperty("time_window")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private TimeWindow timeWindow;
+
     /**
      * An array of break objects
      */
+    @JsonProperty("breaks")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Break> breaks;
 
-    public Vehicle(int id, EnumProfile profile, Coordinate start, Integer startIndex, Coordinate end, Integer endIndex,
-                   List<Integer> capacity, List<Integer> skills, TimeWindow timeWindow, List<Break> breaks) {
-        this.id = id;
-        this.profile = profile;
-        this.start = start;
-        this.startIndex = startIndex;
-        this.end = end;
-        this.endIndex = endIndex;
-        this.capacity = capacity;
-        this.skills = skills;
-        this.timeWindow = timeWindow;
-        this.breaks = breaks;
-    }
-
-    /**
-     *
-     * @return a JSON representation of a vehicle
-     * @throws JSONException if some JSON parsing exception happened.
-     */
-    @Override
-    public JSONObject getJSONRepresentation() throws JSONException {
-        JSONObject obj = new JSONObject();
-        obj.put("id", id);
-        obj.put("profile", profile.toString());
-        if(start != null)
-            obj.put("start", UtilityFunctions.getCoordinateJSONArray(start));
-        if(startIndex != null)
-            obj.put("start_index", startIndex.intValue());
-        if(end != null)
-            obj.put("end", UtilityFunctions.getCoordinateJSONArray(end));
-        if(endIndex != null)
-            obj.put("end_index", endIndex.intValue());
-        if(capacity != null)
-            obj.put("capacity", UtilityFunctions.getIntegerJSONArray(capacity));
-        if(skills != null)
-            obj.put("skills", UtilityFunctions.getIntegerJSONArray(skills));
-        if(timeWindow != null)
-            obj.put("time_window", UtilityFunctions.getJSONArrayFromTimeWindow(timeWindow));
-        if(breaks != null)
-            obj.put("breaks", getJSONArrayFromBreakList(breaks));
-        return obj;
-    }
-
-    private JSONArray getJSONArrayFromBreakList(List<Break> list) throws JSONException {
-        JSONArray array = new JSONArray();
-        for(Break b : list)
-            array.put(b.getJSONRepresentation());
-        return array;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public EnumProfile getProfile() {
-        return profile;
-    }
-
-    public Coordinate getStart() {
-        return start;
-    }
-
-    public Integer getStartIndex() {
-        return startIndex;
-    }
-
-    public Coordinate getEnd() {
-        return end;
-    }
-
-    public Integer getEndIndex() {
-        return endIndex;
-    }
-
-    public List<Integer> getCapacity() {
-        return capacity;
-    }
-
-    public List<Integer> getSkills() {
-        return skills;
-    }
-
-    public TimeWindow getTimeWindow() {
-        return timeWindow;
-    }
-
-    public List<Break> getBreaks() {
-        return breaks;
-    }
 }

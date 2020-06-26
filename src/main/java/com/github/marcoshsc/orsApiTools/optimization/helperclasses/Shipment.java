@@ -1,9 +1,11 @@
 package com.github.marcoshsc.orsApiTools.optimization.helperclasses;
 
-import com.github.marcoshsc.orsApiTools.interfaces.JSONRepresentation;
-import com.github.marcoshsc.orsApiTools.utils.UtilityFunctions;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -13,75 +15,45 @@ import java.util.List;
  *
  * @author Marcos Henrique
  */
-public class Shipment implements JSONRepresentation {
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+public class Shipment {
 
     /**
      * Shipment step describing pickup.
      */
+    @JsonProperty("pickup")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private ShipmentStep pickup;
+
     /**
      * Shipment step describing the delivery.
      */
+    @JsonProperty("delivery")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private ShipmentStep delivery;
+
     /**
      * Array of quantities to be picked up and delivered.
      */
+    @JsonProperty("amount")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Integer> amount;
+
     /**
      * List of skills required.
      */
+    @JsonProperty("skills")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Integer> skills;
+
     /**
      * Priority of [0,10] of the shipment.
      */
+    @JsonProperty("priority")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer priority;
 
-    public Shipment(ShipmentStep pickup, ShipmentStep delivery, List<Integer> amount, List<Integer> skills, Integer priority) {
-        this.pickup = pickup;
-        this.delivery = delivery;
-        this.amount = amount;
-        this.skills = skills;
-        this.priority = priority;
-    }
-
-    /**
-     *
-     * @return the JSON representation of the shipment.
-     * @throws JSONException if some JSON parsing error happened.
-     */
-    @Override
-    public JSONObject getJSONRepresentation() throws JSONException {
-        JSONObject obj = new JSONObject();
-        if(amount != null)
-            obj.put("amount", UtilityFunctions.getIntegerJSONArray(amount));
-        if(pickup != null)
-            obj.put("pickup", pickup.getJSONRepresentation());
-        if(delivery != null)
-            obj.put("delivery", delivery.getJSONRepresentation());
-        if(skills != null)
-            obj.put("skills", UtilityFunctions.getIntegerJSONArray(skills));
-        if(priority != null)
-            obj.put("priority", priority.intValue());
-        return obj;
-    }
-
-    public ShipmentStep getPickup() {
-        return pickup;
-    }
-
-    public ShipmentStep getDelivery() {
-        return delivery;
-    }
-
-    public List<Integer> getAmount() {
-        return amount;
-    }
-
-    public List<Integer> getSkills() {
-        return skills;
-    }
-
-    public Integer getPriority() {
-        return priority;
-    }
 }

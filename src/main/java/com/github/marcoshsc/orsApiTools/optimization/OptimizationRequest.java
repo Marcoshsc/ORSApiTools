@@ -1,17 +1,17 @@
 package com.github.marcoshsc.orsApiTools.optimization;
 
-import com.github.marcoshsc.orsApiTools.general.ORSJSONProcessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.marcoshsc.orsApiTools.general.enums.ORSEnum;
 import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
 import com.github.marcoshsc.orsApiTools.general.interfaces.Request;
-import com.github.marcoshsc.orsApiTools.general.superclasses.JSONProcessingContext;
-import com.github.marcoshsc.orsApiTools.optimization.handlers.OptimizationHandler;
 import com.github.marcoshsc.orsApiTools.urlUtils.UrlBuilder;
 import com.github.marcoshsc.orsApiTools.utils.UtilityFunctions;
-import com.github.marcoshsc.orsApiTools.utils.interfaces.StatusCodeHandlerStrategy;
+import lombok.Getter;
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
-import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,16 +21,17 @@ import java.util.Map;
  *
  * @author Marcos Henrique
  */
+@Getter
 public class OptimizationRequest implements Request<OptimizationResponse> {
 
     /**
      * Parameters of the request.
      */
-    private OptimizationParameters parameters = new OptimizationParameters();
+    private final OptimizationParameters parameters = new OptimizationParameters();
     /**
      * Headers of the request.
      */
-    private Map<String, String> headers = new HashMap<>();
+    private final Map<String, String> headers = new HashMap<>();
 
     /**
      *
@@ -48,23 +49,16 @@ public class OptimizationRequest implements Request<OptimizationResponse> {
     @Override
     public OptimizationResponse makeRequest() throws RequestException {
         try {
+            ObjectMapper mapper = new ObjectMapper();
             String URL = buildURL();
-            JSONObject jsonResponse = UtilityFunctions.makePostHttpRequestWithoutHandler(URL, headers, parameters);
-            StatusCodeHandlerStrategy handler = new OptimizationHandler(jsonResponse);
-            handler.verifyStatusCode(jsonResponse.getInt("statusCodeToHandle"));
-            JSONProcessingContext<OptimizationResponse> context = new ORSJSONProcessor<>(new OptimizationProcessingStrategy());
-            return context.processJSON(jsonResponse);
-        } catch (UnsupportedEncodingException | JSONException e) {
+            String json = mapper.writeValueAsString(parameters);
+            System.out.println(json);
+            HttpResponse response = UtilityFunctions.postHttpRequest(URL, json, headers);
+            UtilityFunctions.handleOSMStatusCode(response);
+            return mapper.readValue(EntityUtils.toString(response.getEntity()), OptimizationResponse.class);
+        } catch (JSONException | IOException e) {
             throw new RequestException(e.getMessage());
         }
-    }
-
-    public Map<String, String> getHeaders() {
-        return headers;
-    }
-
-    public OptimizationParameters getParameters() {
-        return parameters;
     }
 
     private void configureDefaultHeaders(String apiKey) {

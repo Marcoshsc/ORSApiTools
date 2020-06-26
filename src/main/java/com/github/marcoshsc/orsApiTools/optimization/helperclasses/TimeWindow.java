@@ -1,31 +1,28 @@
 package com.github.marcoshsc.orsApiTools.optimization.helperclasses;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.github.marcoshsc.orsApiTools.json.serializers.TimeWindowSerializer;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * A time_window object is a pair of timestamps in the form [start, end];
  *
  * @author Marcos Henrique
  */
+@Getter
+@AllArgsConstructor
+@JsonSerialize(using = TimeWindowSerializer.class)
 public class TimeWindow {
 
     /**
      * Start point in seconds.
      */
-    int start;
+    private final int start;
+
     /**
      * End point in seconds.
      */
-    int end;
+    private final int end;
 
-    public TimeWindow(int start, int end) {
-        this.start = start;
-        this.end = end;
-    }
-
-    public int getStart() {
-        return start;
-    }
-
-    public int getEnd() {
-        return end;
-    }
 }

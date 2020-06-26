@@ -1,9 +1,13 @@
 package com.github.marcoshsc.orsApiTools.optimization.helperclasses;
 
-import com.github.marcoshsc.orsApiTools.interfaces.JSONRepresentation;
-import com.github.marcoshsc.orsApiTools.utils.UtilityFunctions;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.github.marcoshsc.orsApiTools.json.serializers.CoordinateSerializer;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.locationtech.jts.geom.Coordinate;
 
 import java.util.List;
@@ -13,74 +17,46 @@ import java.util.List;
  *
  * @author Marcos Henrique
  */
-public class ShipmentStep implements JSONRepresentation {
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+public class ShipmentStep {
 
     /**
      * Unique identifier
      */
-    private int id;
+    @JsonProperty("id")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer id;
+
     /**
      * Location where the shipment step will be made.
      */
+    @JsonProperty("location")
+    @JsonSerialize(using = CoordinateSerializer.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Coordinate location;
+
     /**
      * Index of the location in the matrix. Just works if a durations matrix was passed in the parameters.
      */
+    @JsonProperty("location_index")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer locationIndex;
+
     /**
      * Total time spent in the step.
      */
-    private int service;
+    @JsonProperty("service")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer service;
+
     /**
      * List of periods of time that the step can be started.
      */
+    @JsonProperty("time_windows")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<TimeWindow> timeWindows;
 
-    public ShipmentStep(int id, Coordinate location, Integer locationIndex, int service, List<TimeWindow> timeWindows) {
-        this.id = id;
-        this.location = location;
-        this.locationIndex = locationIndex;
-        this.service = service;
-        this.timeWindows = timeWindows;
-    }
-
-    /**
-     *
-     * @return a JSON representation of a step.
-     * @throws JSONException if some JSON parsing error happened.
-     */
-    @Override
-    public JSONObject getJSONRepresentation() throws JSONException {
-        JSONObject obj = new JSONObject();
-        obj.put("id", id);
-        if(location != null)
-            obj.put("location", UtilityFunctions.getCoordinateJSONArray(location));
-        if(locationIndex != null)
-            obj.put("location_index", locationIndex.intValue());
-        if(service != 0)
-            obj.put("service", service);
-        if(timeWindows != null)
-            obj.put("time_windows", UtilityFunctions.getJSONArrayFromTimeWindowList(timeWindows));
-        return obj;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public Coordinate getLocation() {
-        return location;
-    }
-
-    public Integer getLocationIndex() {
-        return locationIndex;
-    }
-
-    public int getService() {
-        return service;
-    }
-
-    public List<TimeWindow> getTimeWindows() {
-        return timeWindows;
-    }
 }

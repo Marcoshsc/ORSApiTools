@@ -44,13 +44,18 @@ public interface UtilityFunctions {
         int statusCode = response.getStatusLine().getStatusCode();
         try {
             if (statusCode >= 400) {
+                if(statusCode == 503) throw new RequestException("ERROR 503: The server is currently unavailable " +
+                        "due to overload or maintenance.");
                 ObjectMapper mapper = new ObjectMapper();
                 JsonNode node = mapper.readValue(EntityUtils.toString(response.getEntity()), JsonNode.class);
                 if (node.has("error")) {
                     JsonNode errorNode = node.get("error");
-                    String message = String.format("%s Error code: %d.", errorNode.get("message").asText(),
-                            errorNode.get("code").asInt());
-                    throw new RequestException(message);
+                    if(errorNode.has("message")) {
+                        String message = String.format("%s Error code: %d.", errorNode.get("message").asText(),
+                                errorNode.get("code").asInt());
+                        throw new RequestException(message);
+                    }
+                    throw new RequestException(errorNode.asText());
                 }
                 throw new RequestException("Response returned status code " + statusCode + ".");
             }

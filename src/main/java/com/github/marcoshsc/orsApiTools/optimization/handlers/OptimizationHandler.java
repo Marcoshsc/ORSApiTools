@@ -2,6 +2,7 @@ package com.github.marcoshsc.orsApiTools.optimization.handlers;
 
 import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
 import com.github.marcoshsc.orsApiTools.utils.interfaces.StatusCodeHandlerStrategy;
+import lombok.AllArgsConstructor;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,17 +11,10 @@ import org.json.JSONObject;
  *
  * @author Marcos Henrique
  */
+@AllArgsConstructor
 public class OptimizationHandler implements StatusCodeHandlerStrategy {
 
-    private JSONObject response;
-
-    /**
-     *
-     * @param response the response to search for the error.
-     */
-    public OptimizationHandler(JSONObject response) {
-        this.response = response;
-    }
+    private final JSONObject response;
 
     /**
      *

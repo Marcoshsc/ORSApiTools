@@ -1,6 +1,11 @@
 package com.github.marcoshsc.orsApiTools.optimization.helperclasses;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.github.marcoshsc.orsApiTools.json.deserializers.CoordinateDeserializer;
 import com.github.marcoshsc.orsApiTools.optimization.enums.StepTypeEnum;
+import lombok.Getter;
 import org.locationtech.jts.geom.Coordinate;
 
 import java.util.List;
@@ -11,46 +16,74 @@ import java.util.List;
  *
  * @author Marcos Henrique
  */
+@Getter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Step {
+
     /**
      * Type of the step.
      */
-    private StepTypeEnum type;
+    private final StepTypeEnum type;
+
     /**
      * 	Estimated time of arrival at this step
      */
-    private int arrival;
+    private final int arrival;
+
     /**
      * 	Cumulated travel time upon arrival at this step
      */
-    private int duration;
+    private final int duration;
+
     /**
      * Location of the step.
      */
-    private Coordinate location;
+    private final Coordinate location;
+
     /**
      * Id of the job performed at this step (not provided for start and end)
      */
-    private Integer job;
+    private final Integer job;
+
     /**
      * vehicle load after step completion (with capacity constraints)
      */
-    private List<Integer> load;
+    private final List<Integer> load;
+
     /**
      * service time at this step (not provided for start and end)
      */
-    private Integer service;
+    private final Integer service;
+
     /**
      * waiting time upon arrival at this step (not provided for start and end)
      */
-    private Integer waitingTime;
+    private final Integer waitingTime;
+
     /**
      * traveled distance upon arrival at this step. (provided only if "g" parameter is set)
      */
-    private Double distance;
+    private final Double distance;
 
-    public Step(StepTypeEnum type, int arrival, int duration, Coordinate location, Integer job, List<Integer> load,
-                Integer service, Integer waitingTime, Double distance) {
+    public Step(@JsonProperty(value = "type", required = true)
+                        StepTypeEnum type,
+                @JsonProperty(value = "arrival", required = true)
+                        int arrival,
+                @JsonProperty(value = "duration", required = true)
+                        int duration,
+                @JsonProperty("location")
+                @JsonDeserialize(using = CoordinateDeserializer.class)
+                        Coordinate location,
+                @JsonProperty("job")
+                        Integer job,
+                @JsonProperty("load")
+                        List<Integer> load,
+                @JsonProperty(value = "service")
+                        Integer service,
+                @JsonProperty("waiting_time")
+                        Integer waitingTime,
+                @JsonProperty("distance")
+                        Double distance) {
         this.type = type;
         this.arrival = arrival;
         this.duration = duration;
@@ -60,42 +93,6 @@ public class Step {
         this.service = service;
         this.waitingTime = waitingTime;
         this.distance = distance;
-    }
-
-    public StepTypeEnum getType() {
-        return type;
-    }
-
-    public int getArrival() {
-        return arrival;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public Coordinate getLocation() {
-        return location;
-    }
-
-    public Integer getJob() {
-        return job;
-    }
-
-    public List<Integer> getLoad() {
-        return load;
-    }
-
-    public Integer getService() {
-        return service;
-    }
-
-    public Integer getWaitingTime() {
-        return waitingTime;
-    }
-
-    public Double getDistance() {
-        return distance;
     }
 
     @Override
@@ -112,4 +109,5 @@ public class Step {
                 ", distance=" + distance +
                 "}\n";
     }
+
 }

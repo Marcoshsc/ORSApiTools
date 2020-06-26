@@ -1,9 +1,9 @@
 package com.github.marcoshsc.orsApiTools.optimization.helperclasses;
 
-import com.github.marcoshsc.orsApiTools.interfaces.JSONRepresentation;
-import com.github.marcoshsc.orsApiTools.utils.UtilityFunctions;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.List;
 
@@ -12,52 +12,29 @@ import java.util.List;
  *
  * @author Marcos Henrique
  */
-public class Break implements JSONRepresentation {
+@Getter
+@AllArgsConstructor
+public class Break {
 
     /**
      * Unique identifier
      */
-    private int id;
+    @JsonProperty("id")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private final Integer id;
+
     /**
      * Periods of time that the break can be started.
      */
-    private List<TimeWindow> timeWindows;
+    @JsonProperty("time_windows")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private final List<TimeWindow> timeWindows;
+
     /**
      * Total time spent in the break.
      */
-    private int service;
+    @JsonProperty("service")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private final Integer service;
 
-    public Break(int id, List<TimeWindow> timeWindows, int service) {
-        this.id = id;
-        this.timeWindows = timeWindows;
-        this.service = service;
-    }
-
-    /**
-     *
-     * @return an JSON representation of the break object.
-     * @throws JSONException if some JSON parsing error happened.
-     */
-    @Override
-    public JSONObject getJSONRepresentation() throws JSONException {
-        JSONObject obj = new JSONObject();
-        obj.put("id", id);
-        if(timeWindows != null)
-            obj.put("time_windows", UtilityFunctions.getJSONArrayFromTimeWindowList(timeWindows));
-        if(service != 0)
-            obj.put("service", service);
-        return obj;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public List<TimeWindow> getTimeWindows() {
-        return timeWindows;
-    }
-
-    public int getService() {
-        return service;
-    }
 }

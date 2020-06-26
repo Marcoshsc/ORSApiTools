@@ -1,5 +1,9 @@
 package com.github.marcoshsc.orsApiTools.optimization.helperclasses;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+
 import java.util.List;
 
 /**
@@ -7,50 +11,70 @@ import java.util.List;
  *
  * @author Marcos Henrique
  */
+@Getter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Route {
+
     /**
      * Identifier of the vehicle that will do the route.
      */
-    private int vehicleId;
+    private final int vehicleId;
+
     /**
      * List of steps to be followed.
      */
-    private List<Step> steps;
+    private final List<Step> steps;
+
     /**
      * Total cost of the route. Cost = duration
      */
-    private int cost;
+    private final int cost;
+
     /**
      * Total time spent on the route.
      */
-    private int service;
+    private final int service;
+
     /**
      * Total duration of the route.
      */
-    private int duration;
+    private final int duration;
+
     /**
      * Total time waited in the route.
      */
-    private int waitingTime;
+    private final int waitingTime;
+
     /**
      * List of quantities to be picked up in the route.
      */
-    private List<Integer> pickup;
+    private final List<Integer> pickup;
+
     /**
      * List of quantities to be delivered in the route.
      */
-    private List<Integer> delivery;
+    private final List<Integer> delivery;
+
     /**
      * Encoded polyline geometry. It is included just if "g" parameter is set.
      */
-    private String geometry;
+    private final String geometry;
+
     /**
      * Total distance of the route. It is included just if "g" parameter is set.
      */
-    private Double distance;
+    private final Double distance;
 
-    public Route(int vehicleId, List<Step> steps, int cost, int service, int duration, int waitingTime,
-                 List<Integer> pickup, List<Integer> delivery, String geometry, Double distance) {
+    public Route(@JsonProperty(value = "vehicle", required = true) int vehicleId,
+                 @JsonProperty(value = "steps", required = true) List<Step> steps,
+                 @JsonProperty(value = "cost", required = true) int cost,
+                 @JsonProperty(value = "service", required = true) int service,
+                 @JsonProperty(value = "duration", required = true) int duration,
+                 @JsonProperty(value = "waiting_time", required = true) int waitingTime,
+                 @JsonProperty(value = "pickup", required = true) List<Integer> pickup,
+                 @JsonProperty(value = "delivery", required = true) List<Integer> delivery,
+                 @JsonProperty("geometry") String geometry,
+                 @JsonProperty("distance") Double distance) {
         this.vehicleId = vehicleId;
         this.steps = steps;
         this.cost = cost;
@@ -61,46 +85,6 @@ public class Route {
         this.delivery = delivery;
         this.geometry = geometry;
         this.distance = distance;
-    }
-
-    public int getVehicleId() {
-        return vehicleId;
-    }
-
-    public List<Step> getSteps() {
-        return steps;
-    }
-
-    public int getCost() {
-        return cost;
-    }
-
-    public int getService() {
-        return service;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public int getWaitingTime() {
-        return waitingTime;
-    }
-
-    public List<Integer> getPickup() {
-        return pickup;
-    }
-
-    public List<Integer> getDelivery() {
-        return delivery;
-    }
-
-    public String getGeometry() {
-        return geometry;
-    }
-
-    public Double getDistance() {
-        return distance;
     }
 
     @Override
@@ -118,4 +102,5 @@ public class Route {
                 ", distance=" + distance +
                 "}\n";
     }
+
 }

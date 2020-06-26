@@ -1,31 +1,32 @@
 package com.github.marcoshsc.orsApiTools.optimization.helperclasses;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+
 /**
  * Describes an computing time object, present in a summary of a optimization request.
  *
  * @author Marcos Henrique
  */
+@Getter
 public class ComputingTime {
+
     /**
      * Time spent to load the data.
      */
-    private int loading;
+    private final int loading;
+
     /**
      * Time spent making the solution.
      */
-    private int solving;
+    private final int solving;
 
-    public ComputingTime(int loading, int solving) {
+    @JsonCreator
+    public ComputingTime(@JsonProperty("loading") int loading,
+                         @JsonProperty("solving") int solving) {
         this.loading = loading;
         this.solving = solving;
-    }
-
-    public int getLoading() {
-        return loading;
-    }
-
-    public int getSolving() {
-        return solving;
     }
 
     @Override
@@ -35,4 +36,5 @@ public class ComputingTime {
                 ", solving=" + solving +
                 '}';
     }
+
 }
