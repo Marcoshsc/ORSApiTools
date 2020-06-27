@@ -5,7 +5,7 @@ import com.github.marcoshsc.orsApiTools.utils.interfaces.StatusCodeHandlerStrate
 
 public abstract class StatusCodeHandlerContext implements StatusCodeHandlerStrategy {
 
-    private StatusCodeHandlerStrategy handler;
+    private final StatusCodeHandlerStrategy handler;
 
     public StatusCodeHandlerContext(StatusCodeHandlerStrategy handler) {
         this.handler = handler;

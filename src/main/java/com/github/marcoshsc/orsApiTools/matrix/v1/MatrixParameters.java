@@ -4,6 +4,9 @@ import com.github.marcoshsc.orsApiTools.general.parameters.*;
 import com.github.marcoshsc.orsApiTools.interfaces.ParameterList;
 import com.github.marcoshsc.orsApiTools.interfaces.QueryParameter;
 import com.github.marcoshsc.orsApiTools.matrix.v1.parameters.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -20,6 +23,9 @@ import java.util.List;
  * @author Marcos Henrique Santos Cunha in 21-03-2020
  *
  */
+@Getter
+@Setter
+@ToString
 public class MatrixParameters implements ParameterList {
 
 	/**
@@ -88,86 +94,6 @@ public class MatrixParameters implements ParameterList {
 			System.out.println("Something wrong happened with the parameters");
 		}
 		return parameters;
-	}
-	
-	public Units getUnits() {
-		return units;
-	}
-
-	public void setUnits(Units units) {
-		this.units = units;
-	}
-
-	public ApiKey getApiKey() {
-		return apiKey;
-	}
-	
-	public void setApiKey(ApiKey apiKey) {
-		this.apiKey = apiKey;
-	}
-	
-	public Profile getProfile() {
-		return profile;
-	}
-	
-	public void setProfile(Profile profile) {
-		this.profile = profile;
-	}
-	
-	public Locations getLocations() {
-		return locations;
-	}
-	
-	public void setLocations(Locations locations) {
-		this.locations = locations;
-	}
-	
-	public Sources getSources() {
-		return sources;
-	}
-
-	public void setSources(Sources sources) {
-		this.sources = sources;
-	}
-	
-	public Destinations getDestinations() {
-		return destinations;
-	}
-	
-	public void setDestinations(Destinations destinations) {
-		this.destinations = destinations;
-	}
-	
-	public Metrics getMetrics() {
-		return metrics;
-	}
-	
-	public void setMetrics(Metrics metrics) {
-		this.metrics = metrics;
-	}
-	
-	public ResolveLocations getResolveLocations() {
-		return resolveLocations;
-	}
-	
-	public void setResolveLocations(ResolveLocations resolveLocations) {
-		this.resolveLocations = resolveLocations;
-	}
-	
-	public Optimized getOptimized() {
-		return optimized;
-	}
-	
-	public void setOptimized(Optimized optimized) {
-		this.optimized = optimized;
-	}
-	
-	public Id getId() {
-		return id;
-	}
-	
-	public void setId(Id id) {
-		this.id = id;
 	}
 	
 }

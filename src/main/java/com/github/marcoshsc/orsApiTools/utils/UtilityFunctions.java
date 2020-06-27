@@ -3,12 +3,9 @@ package com.github.marcoshsc.orsApiTools.utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
-import com.github.marcoshsc.orsApiTools.interfaces.JSONRequestBody;
-import com.github.marcoshsc.orsApiTools.optimization.helperclasses.TimeWindow;
 import com.github.marcoshsc.orsApiTools.utils.interfaces.StatusCodeHandlerStrategy;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
@@ -65,10 +62,6 @@ public interface UtilityFunctions {
         }
     }
 
-    static Coordinate getCoordinateFromJSONArray(JSONArray array) throws JSONException {
-        return new Coordinate(array.getDouble(0), array.getDouble(1));
-    }
-
     static JSONArray getJSONArrayFromCoordinateList(List<Coordinate> coordinateList) {
         JSONArray jsonArray = new JSONArray();
         for (Coordinate coordinate : coordinateList)
@@ -80,45 +73,10 @@ public interface UtilityFunctions {
         return value < start || value > end;
     }
 
-    static JSONArray getJSONArrayFromTimeWindow(TimeWindow timeWindow) {
-        JSONArray array = new JSONArray();
-        array.put(timeWindow.getStart());
-        array.put(timeWindow.getEnd());
-        return array;
-    }
-
-    static JSONArray getJSONArrayFromTimeWindowList(List<TimeWindow> timeWindows) {
-        JSONArray array = new JSONArray();
-        for(TimeWindow timeWindow : timeWindows)
-            array.put(getJSONArrayFromTimeWindow(timeWindow));
-        return array;
-    }
-
-    static JSONArray getStringJSONArray(List<?> list) {
-        JSONArray array = new JSONArray();
-        for(Object o : list)
-            array.put(o.toString());
-        return array;
-    }
-
     static JSONArray getIntegerJSONArray(List<Integer> list) {
         JSONArray array = new JSONArray();
         for(int s : list)
             array.put(s);
-        return array;
-    }
-
-    static JSONArray getTwoDimensionIntegerJSONArray(List<List<Integer>> matrix) {
-        JSONArray array = new JSONArray();
-        for(List<Integer> list : matrix)
-            array.put(getIntegerJSONArray(list));
-        return array;
-    }
-
-    static JSONArray getCoordinateJSONArray(double x, double y) throws JSONException {
-        JSONArray array = new JSONArray();
-        array.put(x);
-        array.put(y);
         return array;
     }
 
@@ -187,41 +145,6 @@ public interface UtilityFunctions {
         } catch(IOException | JSONException exc) {
             throw new RequestException(exc.getMessage());
         }
-    }
-
-    static JSONObject makePostHTTPRequest(String URL, Map<String, String> headers, JSONRequestBody body,
-                                          StatusCodeHandlerStrategy handler)
-            throws RequestException {
-        try {
-            return handleRequest(handler, getHttpResponse(URL, headers, body));
-        } catch(IOException | JSONException exc) {
-            throw new RequestException(exc.getMessage());
-        }
-    }
-
-    static JSONObject makePostHttpRequestWithoutHandler(String URL, Map<String, String> headers, JSONRequestBody body)
-            throws RequestException {
-        try {
-            HttpResponse response = getHttpResponse(URL, headers, body);
-            int statusCode = response.getStatusLine().getStatusCode();
-            return handleRequest(response, statusCode);
-        } catch(IOException | JSONException exc) {
-            throw new RequestException(exc.getMessage());
-        }
-    }
-
-    static HttpResponse getHttpResponse(String URL, Map<String, String> headers, JSONRequestBody body)
-            throws JSONException, IOException {
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpPost req = new HttpPost(URL);
-        for(String key : headers.keySet()) {
-            req.addHeader(key, headers.get(key));
-        }
-        EntityBuilder entity = EntityBuilder.create();
-        entity.setContentType(ContentType.APPLICATION_JSON);
-        entity.setText(body.getBody().toString());
-        req.setEntity(entity.build());
-        return client.execute(req);
     }
 
     static JSONObject handleRequest (HttpResponse response, Integer statusCode) throws JSONException, IOException {

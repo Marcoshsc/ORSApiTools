@@ -15,9 +15,9 @@ public class UrlBuilder {
 	
 	private String baseUrl;
 	
-	private Map<String, String> queryParams = new HashMap<>();
+	private final Map<String, String> queryParams = new HashMap<>();
 	
-	private ArrayList<String> pathParams = new ArrayList<>();
+	private final ArrayList<String> pathParams = new ArrayList<>();
 	
 	public UrlBuilder() {}
 	
@@ -46,7 +46,6 @@ public class UrlBuilder {
 			sb.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
 		}
 		url = sb.toString();
-		System.out.println(url);
 		return url;
 	}
 	
