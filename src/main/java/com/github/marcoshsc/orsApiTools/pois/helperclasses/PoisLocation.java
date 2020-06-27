@@ -1,41 +1,40 @@
 package com.github.marcoshsc.orsApiTools.pois.helperclasses;
 
-import org.locationtech.jts.geom.Coordinate;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.github.marcoshsc.orsApiTools.json.deserializers.GeometryDeserializer;
+import lombok.Getter;
+import lombok.ToString;
+import org.wololo.geojson.Geometry;
 
 /**
  * Represents a location, that have a coordinate and it's properties. Both are guaranteed to not be null.
  *
  * @author Marcos Henrique
  */
+@Getter
+@ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PoisLocation {
 
     /**
      * Location point
      */
-    private Coordinate coordinate;
+    private final Geometry geometry;
+
     /**
      * Properties about the location
      */
-    private Properties properties;
+    private final Properties properties;
 
-    public PoisLocation(Coordinate coordinate, Properties properties) {
-        this.coordinate = coordinate;
+    public PoisLocation(@JsonProperty(value = "geometry", required = true)
+                        @JsonDeserialize(using = GeometryDeserializer.class)
+                                Geometry geometry,
+                        @JsonProperty(value = "properties", required = true)
+                            Properties properties) {
+        this.geometry = geometry;
         this.properties = properties;
     }
 
-    public Coordinate getCoordinate() {
-        return coordinate;
-    }
-
-    public Properties getProperties() {
-        return properties;
-    }
-
-    @Override
-    public String toString() {
-        return "PoisLocation{" +
-                "coordinate=" + coordinate +
-                ", properties=" + properties +
-                "}\n";
-    }
 }

@@ -1,10 +1,15 @@
 package com.github.marcoshsc.orsApiTools.pois.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.RequiredArgsConstructor;
+
 /**
  * Represent all the possible values to the "request" parameter.
  *
  * @author Marcos Henrique
  */
+@RequiredArgsConstructor
 public enum PoisRequestEnum {
 
     /**
@@ -23,12 +28,14 @@ public enum PoisRequestEnum {
      */
     LIST("list");
 
-    private String value;
+    private final String value;
 
-    PoisRequestEnum(String value) {
-        this.value = value;
+    @JsonValue
+    public String getValue() {
+        return value;
     }
 
+    @JsonCreator
     public static PoisRequestEnum getByStr(String value) {
         for (PoisRequestEnum element :
                 PoisRequestEnum.values()) {

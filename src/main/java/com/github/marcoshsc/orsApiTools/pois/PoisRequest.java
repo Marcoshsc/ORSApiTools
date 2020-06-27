@@ -1,19 +1,23 @@
 package com.github.marcoshsc.orsApiTools.pois;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.marcoshsc.orsApiTools.general.ORSJSONProcessor;
 import com.github.marcoshsc.orsApiTools.general.enums.ORSEnum;
 import com.github.marcoshsc.orsApiTools.general.exceptions.InvalidParameters;
 import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
 import com.github.marcoshsc.orsApiTools.general.interfaces.Request;
 import com.github.marcoshsc.orsApiTools.general.superclasses.JSONProcessingContext;
-import com.github.marcoshsc.orsApiTools.pois.enums.GeoJSONTypes;
 import com.github.marcoshsc.orsApiTools.pois.enums.PoisRequestEnum;
 import com.github.marcoshsc.orsApiTools.pois.enums.SortByEnum;
 import com.github.marcoshsc.orsApiTools.urlUtils.UrlBuilder;
 import com.github.marcoshsc.orsApiTools.utils.UtilityFunctions;
+import lombok.Getter;
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,10 +28,11 @@ import java.util.Map;
  *
  * @author Marcos Henrique
  */
+@Getter
 public class PoisRequest implements Request<PoisResponse> {
 
-    private PoisParameters parameters = new PoisParameters();
-    private Map<String, String> headers = new HashMap<>();
+    private final PoisParameters parameters = new PoisParameters();
+    private final Map<String, String> headers = new HashMap<>();
 
     /**
      *
@@ -46,12 +51,15 @@ public class PoisRequest implements Request<PoisResponse> {
     @Override
     public PoisResponse makeRequest() throws RequestException, InvalidParameters {
         try {
+            ObjectMapper mapper = new ObjectMapper();
             verifyErrors();
             String URL = buildURL();
-            JSONObject jsonResponse = UtilityFunctions.makePostHTTPRequest(URL, headers, parameters, null);
-            JSONProcessingContext<PoisResponse> context = new ORSJSONProcessor<>(new PoisProcessingStrategy());
-            return context.processJSON(jsonResponse);
-        } catch (UnsupportedEncodingException | JSONException e) {
+            String json = mapper.writeValueAsString(parameters);
+            System.out.println(json);
+            HttpResponse response = UtilityFunctions.postHttpRequest(URL, json, headers);
+            UtilityFunctions.handleOSMStatusCode(response);
+            return mapper.readValue(EntityUtils.toString(response.getEntity()), PoisResponse.class);
+        } catch (IOException | JSONException e) {
             throw new RequestException(e.getMessage());
         }
     }
@@ -82,15 +90,13 @@ public class PoisRequest implements Request<PoisResponse> {
         if(notDefinedFields)
             throw new InvalidParameters("Request and geometry parameters must be defined.");
         boolean badRequest = parameters.getRequest() != null &&
-                parameters.getRequest().getRequestValue() != PoisRequestEnum.POIS;
+                parameters.getRequest().getValue() != PoisRequestEnum.POIS;
         boolean badSortBy = parameters.getSortBy() != null &&
-                parameters.getSortBy().getEnumValue() != SortByEnum.DISTANCE;
+                parameters.getSortBy().getValue() != SortByEnum.DISTANCE;
         boolean badLimit = parameters.getLimit() != null &&
                 UtilityFunctions.isOutInterval(parameters.getLimit().getValue(), 1, 2000);
         boolean badBuffer = parameters.getGeometry() != null &&
                 UtilityFunctions.isOutInterval(parameters.getGeometry().getBuffer(), 1, 2000);
-        boolean badGeometryType = parameters.getGeometry() != null && parameters.getGeometry().getGeoJSON() != null &&
-                parameters.getGeometry().getGeoJSON().getType() != GeoJSONTypes.POINT;
         if(badRequest)
             throw new InvalidParameters("The only supported value for request parameter is pois.");
         if(badSortBy)
@@ -100,8 +106,6 @@ public class PoisRequest implements Request<PoisResponse> {
             throw new InvalidParameters("Limit value must be between 1 and 2000.");
         if(badBuffer)
             throw new InvalidParameters("Buffer value must be between 1 and 2000.");
-        if(badGeometryType)
-            throw new InvalidParameters("For now, only point geojson type is supported.");
     }
 
     /**
@@ -114,19 +118,4 @@ public class PoisRequest implements Request<PoisResponse> {
         headers.put("Accept", "application/json; charset=utf-8");
     }
 
-    /**
-     * Returns the parameters to possible changes or visualization.
-     * @return the parameters of the request
-     */
-    public PoisParameters getParameters() {
-        return parameters;
-    }
-
-    /**
-     * Returns the headers to possible changes or visualization.
-     * @return the headers of the request.
-     */
-    public Map<String, String> getHeaders() {
-        return headers;
-    }
 }

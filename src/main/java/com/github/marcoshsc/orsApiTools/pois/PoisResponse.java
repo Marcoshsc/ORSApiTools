@@ -1,9 +1,15 @@
 package com.github.marcoshsc.orsApiTools.pois;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.marcoshsc.orsApiTools.geocode.helperclasses.BoundingBox;
+import com.github.marcoshsc.orsApiTools.json.deserializers.PoisBoundingBoxDeserializer;
+import com.github.marcoshsc.orsApiTools.json.deserializers.PoisInformationDeserializer;
 import com.github.marcoshsc.orsApiTools.pois.helperclasses.PoisLocation;
 import com.github.marcoshsc.orsApiTools.pois.helperclasses.PoisResponseOptions;
-import org.json.JSONObject;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -13,54 +19,37 @@ import java.util.List;
  *
  * @author Marcos Henrique
  */
+@Getter
+@ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PoisResponse {
 
     /**
-     * JSON object representing the response
-     */
-    private JSONObject jsonResponse;
-    /**
      * Array of coordinates representing the bounding box where the points of interest is contained.
      */
-    private BoundingBox boundingBox;
+    private final BoundingBox boundingBox;
+
     /**
      * Array of found locations
      */
-    private List<PoisLocation> features;
+    private final List<PoisLocation> features;
+
     /**
      * Some of the request values passed when making this response.
      */
-    private PoisResponseOptions options;
+    private final PoisResponseOptions options;
 
-    public PoisResponse(JSONObject jsonResponse, BoundingBox boundingBox, List<PoisLocation> features, PoisResponseOptions options) {
-        this.jsonResponse = jsonResponse;
+    public PoisResponse(@JsonProperty("bbox")
+                        @JsonDeserialize(using = PoisBoundingBoxDeserializer.class)
+                                BoundingBox boundingBox,
+                        @JsonProperty(value = "features", required = true)
+                                List<PoisLocation> features,
+                        @JsonProperty("information")
+                        @JsonDeserialize(using = PoisInformationDeserializer.class)
+                            PoisResponseOptions options) {
         this.boundingBox = boundingBox;
         this.features = features;
         this.options = options;
     }
 
-    public BoundingBox getBoundingBox() {
-        return boundingBox;
-    }
-
-    public List<PoisLocation> getFeatures() {
-        return features;
-    }
-
-    public PoisResponseOptions getOptions() {
-        return options;
-    }
-
-    public JSONObject getJsonResponse() {
-        return jsonResponse;
-    }
-
-    @Override
-    public String toString() {
-        return "PoisResponse{" +
-                "boundingBox=" + boundingBox +
-                ", features=" + features +
-                ", options=" + options +
-                "}\n";
-    }
 }

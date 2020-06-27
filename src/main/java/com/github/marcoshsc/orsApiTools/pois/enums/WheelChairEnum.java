@@ -1,10 +1,14 @@
 package com.github.marcoshsc.orsApiTools.pois.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.RequiredArgsConstructor;
+
 /**
  * Represents all the possible values to the "wheelchair" parameter.
  *
  * @author Marcos Henrique
  */
+@RequiredArgsConstructor
 public enum WheelChairEnum {
 
     /**
@@ -29,10 +33,11 @@ public enum WheelChairEnum {
      */
     DESIGNATED("designated");
 
-    private String value;
+    private final String value;
 
-    WheelChairEnum(String value) {
-        this.value = value;
+    @JsonValue
+    public String getValue() {
+        return value;
     }
 
     @Override

@@ -1,5 +1,12 @@
 package com.github.marcoshsc.orsApiTools.pois.helperclasses;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.github.marcoshsc.orsApiTools.json.deserializers.PoisCategoryListDeserializer;
+import lombok.Getter;
+import lombok.ToString;
+
 import java.util.List;
 
 /**
@@ -9,30 +16,47 @@ import java.util.List;
  *
  * @author Marcos Henrique
  */
+@Getter
+@ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Properties {
 
     /**
      * OSM ID of the location
      */
-    private String osmId;
+    private final String osmId;
+
     /**
      * Location OSM type.
      */
-    private int osmType;
+    private final int osmType;
+
     /**
      * Distance from the given point in the request.
      */
-    private double distance;
+    private final double distance;
+
     /**
      * List of location categories registered in OSM.
      */
-    private List<PoisCategory> categories;
+    private final List<PoisCategory> categories;
+
     /**
      * Location tags.
      */
-    private OSMTags tags;
+    private final OSMTags tags;
 
-    public Properties(String osmId, int osmType, double distance, List<PoisCategory> categories, OSMTags tags) {
+    public Properties(@JsonProperty(value = "osm_id", required = true)
+                              String osmId,
+                      @JsonProperty(value = "osm_type", required = true)
+                              int osmType,
+                      @JsonProperty(value = "distance", required = true)
+                              double distance,
+                      @JsonProperty(value = "category_ids", required = true)
+                      @JsonDeserialize(using = PoisCategoryListDeserializer.class)
+                              List<PoisCategory> categories,
+                      @JsonProperty(value = "osm_tags", required = true)
+                              OSMTags tags) {
         this.osmId = osmId;
         this.osmType = osmType;
         this.distance = distance;
@@ -40,34 +64,4 @@ public class Properties {
         this.tags = tags;
     }
 
-    public String getOsmId() {
-        return osmId;
-    }
-
-    public int getOsmType() {
-        return osmType;
-    }
-
-    public double getDistance() {
-        return distance;
-    }
-
-    public List<PoisCategory> getCategories() {
-        return categories;
-    }
-
-    public OSMTags getTags() {
-        return tags;
-    }
-
-    @Override
-    public String toString() {
-        return "Properties{" +
-                "osmId='" + osmId + '\'' +
-                ", osmType=" + osmType +
-                ", distance=" + distance +
-                ", categories=" + categories +
-                ", tags=" + tags +
-                "}\n";
-    }
 }

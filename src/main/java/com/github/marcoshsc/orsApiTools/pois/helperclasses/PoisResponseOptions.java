@@ -1,9 +1,16 @@
 package com.github.marcoshsc.orsApiTools.pois.helperclasses;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.marcoshsc.orsApiTools.geocode.helperclasses.BoundingBox;
+import com.github.marcoshsc.orsApiTools.json.deserializers.GeometryDeserializer;
+import com.github.marcoshsc.orsApiTools.json.deserializers.PoisQueryBoundingBoxDeserializer;
 import com.github.marcoshsc.orsApiTools.pois.enums.FiltersEnum;
 import com.github.marcoshsc.orsApiTools.pois.enums.PoisRequestEnum;
-import org.locationtech.jts.geom.Coordinate;
+import lombok.Getter;
+import lombok.ToString;
+import org.wololo.geojson.Geometry;
 
 import java.util.List;
 import java.util.Map;
@@ -14,65 +21,53 @@ import java.util.Map;
  *
  * @author Marcos Henrique
  */
+@Getter
+@ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PoisResponseOptions {
 
     /**
      * Type of the request passed.
      */
-    private PoisRequestEnum request;
+    private final PoisRequestEnum request;
+
     /**
      * Filters used in the request, if available
      */
-    private Map<FiltersEnum, List<String>> filters;
+    private final Map<FiltersEnum, List<String>> filters;
+
     /**
      * Bounding box of results, used in the request, if available.
      */
-    private BoundingBox boundingBox;
+    private final BoundingBox boundingBox;
+
     /**
      * Coordinate used in the request
      */
-    private Coordinate coordinate;
+    private final Geometry geoJSON;
+
     /**
      * Buffer size used in the request.
      */
-    private int buffer;
+    private final int buffer;
 
-    public PoisResponseOptions(PoisRequestEnum request, Map<FiltersEnum, List<String>> filters, BoundingBox boundingBox, Coordinate coordinate, int buffer) {
+    public PoisResponseOptions(@JsonProperty("request")
+                                       PoisRequestEnum request,
+                               @JsonProperty("filters")
+                                       Map<FiltersEnum, List<String>> filters,
+                               @JsonProperty("boundingBox")
+                               @JsonDeserialize(using = PoisQueryBoundingBoxDeserializer.class)
+                                       BoundingBox boundingBox,
+                               @JsonProperty("geojson")
+                               @JsonDeserialize(using = GeometryDeserializer.class)
+                                       Geometry geoJSON,
+                               @JsonProperty("buffer")
+                                       int buffer) {
         this.request = request;
         this.filters = filters;
         this.boundingBox = boundingBox;
-        this.coordinate = coordinate;
+        this.geoJSON = geoJSON;
         this.buffer = buffer;
     }
 
-    public PoisRequestEnum getRequest() {
-        return request;
-    }
-
-    public Map<FiltersEnum, List<String>> getFilters() {
-        return filters;
-    }
-
-    public BoundingBox getBoundingBox() {
-        return boundingBox;
-    }
-
-    public Coordinate getCoordinate() {
-        return coordinate;
-    }
-
-    public int getBuffer() {
-        return buffer;
-    }
-
-    @Override
-    public String toString() {
-        return "PoisResponseOptions{" +
-                "request=" + request +
-                ", filters=" + filters +
-                ", boundingBox=" + boundingBox +
-                ", coordinate=" + coordinate +
-                ", buffer=" + buffer +
-                "}\n";
-    }
 }

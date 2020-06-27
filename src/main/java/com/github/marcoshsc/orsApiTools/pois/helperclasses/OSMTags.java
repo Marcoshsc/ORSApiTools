@@ -1,6 +1,9 @@
 package com.github.marcoshsc.orsApiTools.pois.helperclasses;
 
-import org.json.JSONObject;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * Tags that can show up in the feature list. They are not guaranteed to be not null, so you must check it before using
@@ -8,52 +11,65 @@ import org.json.JSONObject;
  *
  * @author Marcos Henrique
  */
+@Getter
+@ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OSMTags {
 
     /**
-     * JSON object representing the tags but with no processing.
-     */
-    private JSONObject jsonFormat;
-    /**
      * Name of the location.
      */
-    private String name;
+    private final String name;
+
     /**
      * Location address.
      */
-    private String address;
+    private final String address;
+
     /**
      * URL of location's website.
      */
-    private String webSite;
+    private final String webSite;
+
     /**
      * Schedule of the location.
      */
-    private String openingHours;
+    private final String openingHours;
+
     /**
      * Wheelchair accessibility.
      */
-    private String wheelchair;
+    private final String wheelchair;
+
     /**
      * Distance
      */
-    private String distance;
+    private final String distance;
+
     /**
      * Fee rules of the location.
      */
-    private String fee;
+    private final String fee;
+
     /**
      * Location's smoking rules
      */
-    private String smoking;
+    private final String smoking;
+
     /**
      * Location's phone number.
      */
-    private String phone;
+    private final String phone;
 
-    public OSMTags(JSONObject jsonFormat, String name, String address, String webSite, String openingHours,
-                   String wheelchair, String distance, String fee, String smoking, String phone) {
-        this.jsonFormat = jsonFormat;
+    public OSMTags(@JsonProperty("name") String name,
+                   @JsonProperty("address") String address,
+                   @JsonProperty("website") String webSite,
+                   @JsonProperty("opening_hours") String openingHours,
+                   @JsonProperty("wheelchair") String wheelchair,
+                   @JsonProperty("distance") String distance,
+                   @JsonProperty("fee") String fee,
+                   @JsonProperty("smoking") String smoking,
+                   @JsonProperty("phone") String phone) {
         this.name = name;
         this.address = address;
         this.webSite = webSite;
@@ -65,58 +81,4 @@ public class OSMTags {
         this.phone = phone;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getWebSite() {
-        return webSite;
-    }
-
-    public String getOpeningHours() {
-        return openingHours;
-    }
-
-    public String getWheelchair() {
-        return wheelchair;
-    }
-
-    public String getDistance() {
-        return distance;
-    }
-
-    public String getFee() {
-        return fee;
-    }
-
-    public String getSmoking() {
-        return smoking;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public JSONObject getJsonFormat() {
-        return jsonFormat;
-    }
-
-    @Override
-    public String toString() {
-        return "OSMTags{" +
-                "name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", webSite='" + webSite + '\'' +
-                ", openingHours='" + openingHours + '\'' +
-                ", wheelchair='" + wheelchair + '\'' +
-                ", distance='" + distance + '\'' +
-                ", fee='" + fee + '\'' +
-                ", smoking='" + smoking + '\'' +
-                ", phone='" + phone + '\'' +
-                "}\n";
-    }
 }

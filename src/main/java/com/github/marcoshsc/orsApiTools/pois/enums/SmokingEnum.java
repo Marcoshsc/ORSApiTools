@@ -1,10 +1,14 @@
 package com.github.marcoshsc.orsApiTools.pois.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.RequiredArgsConstructor;
+
 /**
  * Represents all the possible values to the "smoking" parameter.
  *
  * @author Marcos Henrique
  */
+@RequiredArgsConstructor
 public enum SmokingEnum {
 
     /**
@@ -40,10 +44,11 @@ public enum SmokingEnum {
      */
     OUTSIDE("outside");
 
-    private String value;
+    private final String value;
 
-    SmokingEnum(String value) {
-        this.value = value;
+    @JsonValue
+    public String getValue() {
+        return value;
     }
 
     @Override

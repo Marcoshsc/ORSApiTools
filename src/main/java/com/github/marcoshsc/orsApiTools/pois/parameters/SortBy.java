@@ -1,8 +1,10 @@
 package com.github.marcoshsc.orsApiTools.pois.parameters;
 
-import com.github.marcoshsc.orsApiTools.general.enums.ORSEnum;
-import com.github.marcoshsc.orsApiTools.interfaces.JSONBodyParameter;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.github.marcoshsc.orsApiTools.pois.enums.SortByEnum;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * Either you can sort by category or the distance to the geometry object provided in the request.
@@ -11,38 +13,15 @@ import com.github.marcoshsc.orsApiTools.pois.enums.SortByEnum;
  *
  * @author Marcos Henrique
  */
-public class SortBy implements JSONBodyParameter<String> {
+@Getter
+@ToString
+@AllArgsConstructor
+public class SortBy {
 
-    private static final String name = ORSEnum.SORT_BY_BODY_PARAM.toString();
     /**
      * Sorting strategy.
      */
-    private SortByEnum value;
-
-    public SortBy(SortByEnum value) {
-        this.value = value;
-    }
-
-    /**
-     *
-     * @return the parameter name.
-     */
-    @Override
-    public String getKey() {
-        return name;
-    }
-
-    /**
-     *
-     * @return the final processed object referent to the parameter.
-     */
-    @Override
-    public String getValue() {
-        return value.toString();
-    }
-
-    public SortByEnum getEnumValue() {
-        return value;
-    }
+    @JsonValue
+    private final SortByEnum value;
 
 }

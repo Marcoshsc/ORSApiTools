@@ -48,6 +48,7 @@ public interface UtilityFunctions {
                         "due to overload or maintenance.");
                 ObjectMapper mapper = new ObjectMapper();
                 JsonNode node = mapper.readValue(EntityUtils.toString(response.getEntity()), JsonNode.class);
+                System.out.println(node);
                 if (node.has("error")) {
                     JsonNode errorNode = node.get("error");
                     if(errorNode.has("message")) {
