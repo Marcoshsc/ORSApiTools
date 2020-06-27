@@ -8,13 +8,13 @@ import com.github.marcoshsc.orsApiTools.geocode.helperclasses.BoundingBox;
 
 import java.io.IOException;
 
-public class PoisBoundingBoxDeserializer extends StdDeserializer<BoundingBox> {
+public class GeneralBoundingBoxDeserializer extends StdDeserializer<BoundingBox> {
 
-    public PoisBoundingBoxDeserializer() {
+    public GeneralBoundingBoxDeserializer() {
         this(null);
     }
 
-    protected PoisBoundingBoxDeserializer(Class<?> vc) {
+    protected GeneralBoundingBoxDeserializer(Class<?> vc) {
         super(vc);
     }
 
@@ -27,7 +27,7 @@ public class PoisBoundingBoxDeserializer extends StdDeserializer<BoundingBox> {
                 node.get(1).asDouble(),
                 node.get(3).asDouble(),
                 node.get(0).asDouble(),
-                node.get(1).asDouble()
+                node.get(2).asDouble()
         );
     }
 }

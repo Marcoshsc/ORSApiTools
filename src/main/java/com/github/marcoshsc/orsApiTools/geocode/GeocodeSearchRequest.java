@@ -1,5 +1,6 @@
 package com.github.marcoshsc.orsApiTools.geocode;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.marcoshsc.orsApiTools.general.ORSJSONProcessor;
 import com.github.marcoshsc.orsApiTools.general.enums.ORSEnum;
 import com.github.marcoshsc.orsApiTools.general.exceptions.InvalidParameters;
@@ -12,6 +13,7 @@ import com.github.marcoshsc.orsApiTools.utils.UtilityFunctions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,9 +56,11 @@ public class GeocodeSearchRequest implements Request<GeocodeSearchResponse> {
             validateRequest();
             String URL = buildURL();
             JSONObject responseJSON = UtilityFunctions.makeHTTPRequest(URL, headers, null);
-            JSONProcessingContext<GeocodeSearchResponse> context = new ORSJSONProcessor<>(new GeocodeSearchProcessingStrategy());
-            return context.processJSON(responseJSON);
-        } catch(JSONException | UnsupportedEncodingException exc) {
+            System.out.println(responseJSON);
+            return new ObjectMapper().readValue(responseJSON.toString(), GeocodeSearchResponse.class);
+//            JSONProcessingContext<GeocodeSearchResponse> context = new ORSJSONProcessor<>(new GeocodeSearchProcessingStrategy());
+//            return context.processJSON(responseJSON);
+        } catch(JSONException | IOException exc) {
             throw new RequestException(exc.getMessage());
         }
     }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.marcoshsc.orsApiTools.geocode.helperclasses.BoundingBox;
-import com.github.marcoshsc.orsApiTools.json.deserializers.PoisBoundingBoxDeserializer;
+import com.github.marcoshsc.orsApiTools.json.deserializers.GeneralBoundingBoxDeserializer;
 import com.github.marcoshsc.orsApiTools.json.deserializers.PoisInformationDeserializer;
 import com.github.marcoshsc.orsApiTools.pois.helperclasses.PoisLocation;
 import com.github.marcoshsc.orsApiTools.pois.helperclasses.PoisResponseOptions;
@@ -40,7 +40,7 @@ public class PoisResponse {
     private final PoisResponseOptions options;
 
     public PoisResponse(@JsonProperty("bbox")
-                        @JsonDeserialize(using = PoisBoundingBoxDeserializer.class)
+                        @JsonDeserialize(using = GeneralBoundingBoxDeserializer.class)
                                 BoundingBox boundingBox,
                         @JsonProperty(value = "features", required = true)
                                 List<PoisLocation> features,

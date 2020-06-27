@@ -243,6 +243,7 @@ public interface UtilityFunctions {
             throws IOException, RequestException, JSONException {
         int statusCode = response.getStatusLine().getStatusCode();
         if(handler == null) {
+            UtilityFunctions.handleOSMStatusCode(response);
             if (statusCode >= 400)
                 throw new RequestException(String.format("Response returned status code %d. ", statusCode));
         }
