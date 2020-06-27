@@ -1,10 +1,19 @@
 package com.github.marcoshsc.orsApiTools.directions;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.marcoshsc.orsApiTools.directions.helperclasses.RequestOptions;
 import com.github.marcoshsc.orsApiTools.directions.helperclasses.Segment;
+import com.github.marcoshsc.orsApiTools.directions.helperclasses.Summary;
 import com.github.marcoshsc.orsApiTools.directions.helperclasses.extrainfo.DirectionsExtraInfo;
 import com.github.marcoshsc.orsApiTools.geocode.helperclasses.BoundingBox;
-import org.json.JSONObject;
+import com.github.marcoshsc.orsApiTools.json.deserializers.DirectionsGeometryDeserializer;
+import com.github.marcoshsc.orsApiTools.json.deserializers.GeneralBoundingBoxDeserializer;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.locationtech.jts.geom.Coordinate;
 
 import java.util.List;
@@ -15,110 +24,62 @@ import java.util.List;
  *
  * @author Marcos Henrique
  */
+@Getter
+@ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DirectionsResponse {
 
-    /**
-     * JSON data of the response, without any processing.
-     */
-    JSONObject jsonData;
-    /**
-     * Total route distance in specified units.
-     */
-    double distance;
-    /**
-     * Total duration in seconds.
-     */
-    double duration;
-    /**
-     * Total ascent in meters.
-     */
-    Double ascent;
-    /**
-     * Total descent in meters.
-     */
-    Double descent;
-    /**
-     * Total average speed in km/h
-     */
-    Double avgSpeed;
+    private final Summary summary;
+
     /**
      * Contains the geometry in the defined geometry format.
      */
-    List<Coordinate> geometry;
+    private final List<Coordinate> geometry;
+
     /**
      * List containing the segments and its correspoding steps which make up the route.
      */
-    List<Segment> segments;
+    private final List<Segment> segments;
+
+    private final List<Integer> wayPoints;
+
     /**
      * Requested extra information, divided into summary and values.
      */
-    DirectionsExtraInfo extraInfo;
+    private final DirectionsExtraInfo extraInfo;
+
     /**
      * Contains the minimum bounding box of the route.
      */
-    BoundingBox boundingBox;
+    private final BoundingBox boundingBox;
+
     /**
      * Request data passed to make this response.
      */
-    RequestOptions options;
+    @Setter
+    private RequestOptions options;
 
-    public DirectionsResponse(JSONObject jsonData, double distance, double duration, Double ascent, Double descent,
-                              Double avgSpeed, List<Coordinate> geometry, List<Segment> segments,
-                              DirectionsExtraInfo extraInfo, BoundingBox boundingBox, RequestOptions options) {
-        this.jsonData = jsonData;
-        this.distance = distance;
-        this.duration = duration;
-        this.ascent = ascent;
-        this.descent = descent;
-        this.avgSpeed = avgSpeed;
+    @JsonCreator
+    public DirectionsResponse(@JsonProperty(value = "summary", required = true)
+                                      Summary summary,
+                              @JsonProperty("geometry")
+                              @JsonDeserialize(using = DirectionsGeometryDeserializer.class)
+                                      List<Coordinate> geometry,
+                              @JsonProperty("segments")
+                                      List<Segment> segments,
+                              @JsonProperty("way_points")
+                                      List<Integer> wayPoints,
+                              @JsonProperty("extras")
+                                      DirectionsExtraInfo extraInfo,
+                              @JsonProperty(value = "bbox", required = true)
+                              @JsonDeserialize(using = GeneralBoundingBoxDeserializer.class)
+                                      BoundingBox boundingBox) {
+        this.summary = summary;
         this.geometry = geometry;
         this.segments = segments;
+        this.wayPoints = wayPoints;
         this.extraInfo = extraInfo;
         this.boundingBox = boundingBox;
-        this.options = options;
     }
 
-    public JSONObject getJsonData() {
-        return jsonData;
-    }
-
-    public double getDistance() {
-        return distance;
-    }
-
-    public double getDuration() {
-        return duration;
-    }
-
-    public List<Coordinate> getGeometry() {
-        return geometry;
-    }
-
-    public BoundingBox getBoundingBox() {
-        return boundingBox;
-    }
-
-    public List<Segment> getSegments() {
-        return segments;
-    }
-
-    public DirectionsExtraInfo getExtraInfo() {
-        return extraInfo;
-    }
-
-    public Double getAscent() {
-        return ascent;
-    }
-
-    public Double getDescent() {
-        return descent;
-    }
-
-    public Double getAvgSpeed() {
-        return avgSpeed;
-    }
-
-    public RequestOptions getOptions() {
-        return options;
-    }
 }

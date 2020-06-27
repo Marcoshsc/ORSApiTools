@@ -1,5 +1,6 @@
 package com.github.marcoshsc.orsApiTools.optimization.helperclasses;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -65,6 +66,7 @@ public class Route {
      */
     private final Double distance;
 
+    @JsonCreator
     public Route(@JsonProperty(value = "vehicle", required = true) int vehicleId,
                  @JsonProperty(value = "steps", required = true) List<Step> steps,
                  @JsonProperty(value = "cost", required = true) int cost,

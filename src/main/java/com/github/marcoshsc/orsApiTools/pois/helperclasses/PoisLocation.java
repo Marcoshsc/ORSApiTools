@@ -1,5 +1,6 @@
 package com.github.marcoshsc.orsApiTools.pois.helperclasses;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -28,6 +29,7 @@ public class PoisLocation {
      */
     private final Properties properties;
 
+    @JsonCreator
     public PoisLocation(@JsonProperty(value = "geometry", required = true)
                         @JsonDeserialize(using = GeometryDeserializer.class)
                                 Geometry geometry,

@@ -1,22 +1,22 @@
 package com.github.marcoshsc.orsApiTools.directions;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.marcoshsc.orsApiTools.directions.enums.EnumDirectionsGeomType;
 import com.github.marcoshsc.orsApiTools.directions.enums.FormatEnum;
-import com.github.marcoshsc.orsApiTools.directions.errorhandlers.DirectionsStatusCodeHandler;
-import com.github.marcoshsc.orsApiTools.general.ORSJSONProcessor;
 import com.github.marcoshsc.orsApiTools.general.enums.ORSEnum;
 import com.github.marcoshsc.orsApiTools.general.exceptions.InvalidParameters;
 import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
 import com.github.marcoshsc.orsApiTools.general.interfaces.Request;
 import com.github.marcoshsc.orsApiTools.general.parameters.ApiKey;
-import com.github.marcoshsc.orsApiTools.general.superclasses.JSONProcessingContext;
+import com.github.marcoshsc.orsApiTools.json.deserializers.DirectionsResponseDeserializer;
 import com.github.marcoshsc.orsApiTools.urlUtils.UrlBuilder;
-import com.github.marcoshsc.orsApiTools.utils.ConcreteStatusCodeHandler;
 import com.github.marcoshsc.orsApiTools.utils.UtilityFunctions;
-import com.github.marcoshsc.orsApiTools.utils.superclasses.StatusCodeHandlerContext;
+import lombok.Getter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,10 +27,11 @@ import java.util.Map;
  *
  * @author Marcos Henrique
  */
+@Getter
 public class ORSDirectionsRequest implements Request<DirectionsResponse> {
 
-    private DirectionsParameters parameters = new DirectionsParameters();
-    private Map<String, String> headers = new HashMap<>();
+    private final DirectionsParameters parameters = new DirectionsParameters();
+    private final Map<String, String> headers = new HashMap<>();
 
     public ORSDirectionsRequest(String apiKey) {
         parameters.setApiKey(new ApiKey(apiKey));
@@ -55,11 +56,13 @@ public class ORSDirectionsRequest implements Request<DirectionsResponse> {
         try {
             verifyErrors();
             String URL = buildURL();
-            StatusCodeHandlerContext statusCodeContext = new ConcreteStatusCodeHandler(new DirectionsStatusCodeHandler());
-            JSONObject responseJSON = UtilityFunctions.makeHTTPRequest(URL, headers, statusCodeContext);
-            JSONProcessingContext<DirectionsResponse> context = new ORSJSONProcessor<>(new DirectionsProcessingStrategy());
-            return context.processJSON(responseJSON);
-        } catch (UnsupportedEncodingException | JSONException exc) {
+            JSONObject responseJSON = UtilityFunctions.makeHTTPRequest(URL, headers, null);
+            ObjectMapper mapper = new ObjectMapper();
+            SimpleModule module = new SimpleModule();
+            module.addDeserializer(DirectionsResponse.class, new DirectionsResponseDeserializer());
+            mapper.registerModule(module);
+            return mapper.readValue(responseJSON.toString(), DirectionsResponse.class);
+        } catch (IOException | JSONException exc) {
             throw new RequestException(exc.getMessage());
         }
     }
@@ -90,14 +93,6 @@ public class ORSDirectionsRequest implements Request<DirectionsResponse> {
         builder.addPathParam(ORSEnum.DIRECTIONS_PATH);
         builder.addQueryParam(parameters);
         return builder.build();
-    }
-
-    public Map<String, String> getHeaders() {
-        return headers;
-    }
-
-    public DirectionsParameters getParameters() {
-        return parameters;
     }
 
 }

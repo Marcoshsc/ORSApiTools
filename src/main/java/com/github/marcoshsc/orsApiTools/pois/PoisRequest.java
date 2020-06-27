@@ -1,12 +1,10 @@
 package com.github.marcoshsc.orsApiTools.pois;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.marcoshsc.orsApiTools.general.ORSJSONProcessor;
 import com.github.marcoshsc.orsApiTools.general.enums.ORSEnum;
 import com.github.marcoshsc.orsApiTools.general.exceptions.InvalidParameters;
 import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
 import com.github.marcoshsc.orsApiTools.general.interfaces.Request;
-import com.github.marcoshsc.orsApiTools.general.superclasses.JSONProcessingContext;
 import com.github.marcoshsc.orsApiTools.pois.enums.PoisRequestEnum;
 import com.github.marcoshsc.orsApiTools.pois.enums.SortByEnum;
 import com.github.marcoshsc.orsApiTools.urlUtils.UrlBuilder;
@@ -15,7 +13,6 @@ import lombok.Getter;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

@@ -1,13 +1,11 @@
 package com.github.marcoshsc.orsApiTools.geocode;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.marcoshsc.orsApiTools.general.ORSJSONProcessor;
 import com.github.marcoshsc.orsApiTools.general.enums.ORSEnum;
 import com.github.marcoshsc.orsApiTools.general.exceptions.InvalidParameters;
 import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
 import com.github.marcoshsc.orsApiTools.general.interfaces.Request;
 import com.github.marcoshsc.orsApiTools.general.parameters.ApiKey;
-import com.github.marcoshsc.orsApiTools.general.superclasses.JSONProcessingContext;
 import com.github.marcoshsc.orsApiTools.urlUtils.UrlBuilder;
 import com.github.marcoshsc.orsApiTools.utils.UtilityFunctions;
 import org.json.JSONException;

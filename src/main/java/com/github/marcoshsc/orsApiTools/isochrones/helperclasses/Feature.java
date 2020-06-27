@@ -1,5 +1,6 @@
 package com.github.marcoshsc.orsApiTools.isochrones.helperclasses;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -15,6 +16,7 @@ public class Feature {
 
     private final Properties properties;
 
+    @JsonCreator
     public Feature(@JsonProperty(value = "geometry", required = true) Polygon geometry,
                    @JsonProperty(value = "properties", required = true) Properties properties) {
         this.geometry = geometry;

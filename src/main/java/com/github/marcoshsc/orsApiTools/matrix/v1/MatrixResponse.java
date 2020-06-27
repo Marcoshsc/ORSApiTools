@@ -1,5 +1,6 @@
 package com.github.marcoshsc.orsApiTools.matrix.v1;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.marcoshsc.orsApiTools.matrix.general.helperclasses.Location;
 import com.github.marcoshsc.orsApiTools.matrix.general.superclasses.AbstractMatrixResponse;
@@ -13,6 +14,7 @@ import java.util.List;
  * @author Marcos Henrique
  */
 public class MatrixResponse extends AbstractMatrixResponse {
+    @JsonCreator
     public MatrixResponse(@JsonProperty("durations") List<List<Double>> durations,
                             @JsonProperty("distances") List<List<Double>> distances,
                             @JsonProperty("sources") List<Location> sources,

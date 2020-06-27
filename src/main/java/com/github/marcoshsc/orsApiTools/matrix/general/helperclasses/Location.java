@@ -1,5 +1,6 @@
 package com.github.marcoshsc.orsApiTools.matrix.general.helperclasses;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -15,6 +16,7 @@ public class Location {
     private final String name;
     private final Double snappedDistance;
 
+    @JsonCreator
     public Location(@JsonProperty(value = "location", required = true)
                     @JsonDeserialize(using = CoordinateDeserializer.class)
                             Coordinate location,

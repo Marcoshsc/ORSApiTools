@@ -1,5 +1,8 @@
 package com.github.marcoshsc.orsApiTools.directions.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.RequiredArgsConstructor;
+
 /**
  * 
  * Describe all the possible values to the "language" query parameter on the ORS API.
@@ -7,6 +10,7 @@ package com.github.marcoshsc.orsApiTools.directions.enums;
  * @author Marcos Henrique Santos Cunha in 11-03-2020
  *
  */
+@RequiredArgsConstructor
 public enum LanguageEnum {
 	
 	MAINLAND_CHINA_SIMPLIFIED_CHARACTERS("zh-CN"),
@@ -21,19 +25,20 @@ public enum LanguageEnum {
 	GREEK("gr"),
 	HUNGARIAN("hu");
 	
-	private String value;
-	
-	private LanguageEnum(String value) {
-		this.value = value;
+	private final String value;
+
+	@JsonValue
+	public String getValue() {
+		return value;
 	}
 
 	public static LanguageEnum getByStr(String value) {
 		for (LanguageEnum profile :
 				LanguageEnum.values()) {
-			if(profile.toString().equals(value))
+			if(profile.getValue().toUpperCase().equals(value.toUpperCase()))
 				return profile;
 		}
-		return null;
+		throw new IllegalArgumentException("Invalid language.");
 	}
 	
 	public String toString() {

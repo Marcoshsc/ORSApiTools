@@ -1,10 +1,11 @@
 package com.github.marcoshsc.orsApiTools.directions;
 
-import com.github.marcoshsc.orsApiTools.directions.parameters.SuppressWarnings;
 import com.github.marcoshsc.orsApiTools.directions.parameters.*;
 import com.github.marcoshsc.orsApiTools.general.parameters.*;
 import com.github.marcoshsc.orsApiTools.interfaces.ParameterList;
 import com.github.marcoshsc.orsApiTools.interfaces.QueryParameter;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -23,6 +24,8 @@ import java.util.List;
  * @author Marcos Henrique Santos Cunha in 21-03-2020
  *
  */
+@Getter
+@Setter
 public class DirectionsParameters implements ParameterList {
 
 	/**
@@ -134,181 +137,5 @@ public class DirectionsParameters implements ParameterList {
 		}
 		return parameters;
 	}
-	
-	public ApiKey getApiKey() {
-		return apiKey;
-	}
-	
-	public void setApiKey(ApiKey apiKey) {
-		this.apiKey = apiKey;
-	}
-	
-	public Attributes getAttributes() {
-		return attributes;
-	}
-	
-	public void setAttributes(Attributes attributes) {
-		this.attributes = attributes;
-	}
-	
-	public ContinueStraight getContinueStraight() {
-		return continueStraight;
-	}
-	
-	public void setContinueStraight(ContinueStraight continueStraight) {
-		this.continueStraight = continueStraight;
-	}
-	
-	public Coordinates getCoordinates() {
-		return coordinates;
-	}
-	
-	public void setCoordinates(Coordinates coordinates) {
-		this.coordinates = coordinates;
-	}
-	
-	public Elevation getElevation() {
-		return elevation;
-	}
-	
-	public void setElevation(Elevation elevation) {
-		this.elevation = elevation;
-	}
-	
-	public ExtraInfo getExtraInfo() {
-		return extraInfo;
-	}
-	
-	public void setExtraInfo(ExtraInfo extraInfo) {
-		this.extraInfo = extraInfo;
-	}
-	
-	public Format getFormat() {
-		return format;
-	}
-	
-	public void setFormat(Format format) {
-		this.format = format;
-	}
-	
-	public Geometry getGeometry() {
-		return geometry;
-	}
-	
-	public void setGeometry(Geometry geometry) {
-		this.geometry = geometry;
-	}
-	
-	public GeometryFormat getGeometryFormat() {
-		return geometryFormat;
-	}
-	
-	public void setGeometryFormat(GeometryFormat geometryFormat) {
-		this.geometryFormat = geometryFormat;
-	}
-	
-	public GeometrySimplify getGeometrySimplify() {
-		return geometrySimplify;
-	}
-	
-	public void setGeometrySimplify(GeometrySimplify geometrySimplify) {
-		this.geometrySimplify = geometrySimplify;
-	}
-	
-	public Id getId() {
-		return id;
-	}
-	
-	public void setId(Id id) {
-		this.id = id;
-	}
-	
-	public Instructions getInstructions() {
-		return instructions;
-	}
-	
-	public void setInstructions(Instructions instructions) {
-		this.instructions = instructions;
-	}
-	
-	public InstructionsFormat getInstructionsFormat() {
-		return instructionsFormat;
-	}
-	
-	public void setInstructionsFormat(InstructionsFormat instructionsFormat) {
-		this.instructionsFormat = instructionsFormat;
-	}
-	
-	public Language getLanguage() {
-		return language;
-	}
-	
-	public void setLanguage(Language language) {
-		this.language = language;
-	}
-	
-	public Maneuvers getManeuvers() {
-		return maneuvers;
-	}
-	
-	public void setManeuvers(Maneuvers maneuvers) {
-		this.maneuvers = maneuvers;
-	}
-	
-	public Optimized getOptimized() {
-		return optimized;
-	}
-	
-	public void setOptimized(Optimized optimized) {
-		this.optimized = optimized;
-	}
-	
-	public Preference getPreference() {
-		return preference;
-	}
-	
-	public void setPreference(Preference preference) {
-		this.preference = preference;
-	}
-	
-	public Profile getProfile() {
-		return profile;
-	}
-	
-	public void setProfile(Profile profile) {
-		this.profile = profile;
-	}
-	
-	public Radiuses getRadiuses() {
-		return radiuses;
-	}
-	
-	public void setRadiuses(Radiuses radiuses) {
-		this.radiuses = radiuses;
-	}
-	
-	public RoundaboutExits getRoundaboutExits() {
-		return roundaboutExits;
-	}
-	
-	public void setRoundaboutExits(RoundaboutExits roundaboutExits) {
-		this.roundaboutExits = roundaboutExits;
-	}
-	
-	public com.github.marcoshsc.orsApiTools.directions.parameters.SuppressWarnings getSuppressWarnings() {
-		return suppressWarnings;
-	}
-	
-	public void setSuppressWarnings(SuppressWarnings suppressWarnings) {
-		this.suppressWarnings = suppressWarnings;
-	}
-	
-	public Units getUnits() {
-		return units;
-	}
-	
-	public void setUnits(Units units) {
-		this.units = units;
-	}
-	
+
 }

@@ -27,7 +27,11 @@ public class CoordinateListDeserializer extends StdDeserializer<List<Coordinate>
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
         for (int i = 0; i < node.size(); i++) {
             JsonNode innerNode = node.get(i);
-            coordinates.add(new Coordinate(innerNode.get(0).asDouble(), innerNode.get(1).asDouble()));
+            if(innerNode.size() == 3)
+                coordinates.add(new Coordinate(innerNode.get(0).asDouble(), innerNode.get(1).asDouble(),
+                        innerNode.get(2).asDouble()));
+            else
+                coordinates.add(new Coordinate(innerNode.get(0).asDouble(), innerNode.get(1).asDouble()));
         }
         return coordinates;
     }

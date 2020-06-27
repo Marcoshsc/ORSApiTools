@@ -39,6 +39,7 @@ public class DirectionsTest {
         req.getParameters().setExtraInfo(new ExtraInfo(ExtraInfoEnum.AVERAGE_SPEED));
         try {
             DirectionsResponse res = req.makeRequest();
+            System.out.println(res);
 //            ExtraInfoField e = res.getExtraInfo().getAvgSpeed();
 //            for (int i = 0; i < e.getValues().size(); i++) {
 //                System.out.println(e.getValues().get(i).getStartWayPoint());

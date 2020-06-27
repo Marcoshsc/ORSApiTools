@@ -1,10 +1,11 @@
 package com.github.marcoshsc.orsApiTools.geocode.helperclasses;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.github.marcoshsc.orsApiTools.json.deserializers.GeometryDeserializer;
 import com.github.marcoshsc.orsApiTools.json.deserializers.GeneralBoundingBoxDeserializer;
+import com.github.marcoshsc.orsApiTools.json.deserializers.GeometryDeserializer;
 import lombok.Getter;
 import lombok.ToString;
 import org.wololo.geojson.Geometry;
@@ -28,6 +29,7 @@ public class Location {
     private final Map<String, Object> properties;
     private final BoundingBox boundingBox;
 
+    @JsonCreator
     public Location(@JsonProperty("geometry")
                     @JsonDeserialize(using = GeometryDeserializer.class)
                             Geometry geometry,
@@ -40,17 +42,5 @@ public class Location {
         this.properties = properties;
         this.boundingBox = boundingBox;
     }
-//
-//    public Coordinate getGeometry() {
-//        return geometry;
-//    }
-//
-//    public Map<String, String> getProperties() {
-//        return properties;
-//    }
-//
-//    public BoundingBox getBoundingBox() {
-//        return boundingBox;
-//    }
 
 }

@@ -1,5 +1,11 @@
 package com.github.marcoshsc.orsApiTools.directions.helperclasses.extrainfo;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.ToString;
+
 import java.util.List;
 
 /**
@@ -7,26 +13,27 @@ import java.util.List;
  *
  * @author Marcos Henrique
  */
+@Getter
+@ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ExtraInfoField {
+
     /**
      * Broken down by way_points.
      */
-    private List<ExtraInfoValues> values;
+    private final List<ExtraInfoValues> values;
+
     /**
      * Broken down by information category values.
      */
-    private List<ExtraInfoSummary> summary;
+    private final List<ExtraInfoSummary> summary;
 
-    public ExtraInfoField(List<ExtraInfoValues> values, List<ExtraInfoSummary> summary) {
+    @JsonCreator
+    public ExtraInfoField(@JsonProperty(value = "values", required = true)
+                                  List<ExtraInfoValues> values,
+                          @JsonProperty(value = "summary", required = true) List<ExtraInfoSummary> summary) {
         this.values = values;
         this.summary = summary;
     }
 
-    public List<ExtraInfoValues> getValues() {
-        return values;
-    }
-
-    public List<ExtraInfoSummary> getSummary() {
-        return summary;
-    }
 }

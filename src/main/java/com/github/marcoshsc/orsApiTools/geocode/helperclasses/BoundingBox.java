@@ -19,36 +19,4 @@ public class BoundingBox {
     private final double minLongitude;
     private final double maxLongitude;
 
-//    public BoundingBox(double minLatitude, double maxLatidude, double minLongitude, double maxLongitude) {
-//        this.minLatitude = minLatitude;
-//        this.maxLatidude = maxLatidude;
-//        this.minLongitude = minLongitude;
-//        this.maxLongitude = maxLongitude;
-//    }
-//
-//    public double getMinLatitude() {
-//        return minLatitude;
-//    }
-//
-//    public double getMaxLatidude() {
-//        return maxLatidude;
-//    }
-//
-//    public double getMinLongitude() {
-//        return minLongitude;
-//    }
-//
-//    public double getMaxLongitude() {
-//        return maxLongitude;
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "BoundingBox{" +
-//                "minLatitude=" + minLatitude +
-//                ", maxLatidude=" + maxLatidude +
-//                ", minLongitude=" + minLongitude +
-//                ", maxLongitude=" + maxLongitude +
-//                '}';
-//    }
 }

@@ -1,5 +1,6 @@
 package com.github.marcoshsc.orsApiTools.isochrones.helperclasses;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -23,6 +24,7 @@ public class Properties {
     private final Double reachFactor;
     private final Double totalPopulation;
 
+    @JsonCreator
     public Properties(@JsonProperty(value = "group_index", required = true) Integer groupIndex,
                       @JsonProperty(value = "value", required = true) Double value,
                       @JsonProperty(value = "center", required = true) Coordinate center,

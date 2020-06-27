@@ -1,12 +1,11 @@
 package com.github.marcoshsc.orsApiTools.geocode;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.marcoshsc.orsApiTools.geocode.helperclasses.Location;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
-import org.json.JSONObject;
 
 import java.util.List;
 
@@ -20,25 +19,15 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GeocodeSearchResponse {
 
-//    /**
-//     * JSON format of response without any processing.
-//     */
-//    private final JSONObject jsonData;
     /**
      * List of found locations.
      */
     private final List<Location> foundLocations;
 
+    @JsonCreator
     public GeocodeSearchResponse(@JsonProperty("features")
                                          List<Location> foundLocations) {
         this.foundLocations = foundLocations;
     }
-//
-//    public JSONObject getJsonData() {
-//        return jsonData;
-//    }
-//
-//    public List<Location> getFoundLocations() {
-//        return foundLocations;
-//    }
+
 }

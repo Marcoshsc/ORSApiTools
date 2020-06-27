@@ -1,5 +1,11 @@
 package com.github.marcoshsc.orsApiTools.directions.helperclasses;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.ToString;
+
 import java.util.List;
 
 /**
@@ -8,52 +14,69 @@ import java.util.List;
  *
  * @author Marcos Henrique
  */
+@Getter
+@ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Segment {
 
     /**
      * Contains the distance of the segment in specified units.
      */
-    double distance;
+    private final double distance;
+
     /**
      * Contains the duration of the segment in seconds.
      */
-    double duration;
+    private final double duration;
+
     /**
      * Contains ascent of this segment in meters for elevation=true.
      */
-    Double ascent;
+    private final Double ascent;
+
     /**
      * Contains descent of this segment in meters for elevation=true.
      */
-    Double descent;
+    private final Double descent;
+
     /**
      * Contains the average speed of this segment in km/h.
      */
-    Double avgSpeed;
+    private final Double avgSpeed;
+
     /**
      * Contains the deviation compared to a straight line that would have the factor 1.
      * Double the Distance would be a 2.
      */
-    Double detourFactor;
+    private final Double detourFactor;
+
     /**
      * Contains the proportion of the route in percent.
      */
-    Double percentage;
+    private final Double percentage;
+
     /**
      * List containing the specific steps the segment consists of.
      */
-    List<Step> steps;
-    /**
-     * Index of the start way point in the geometry array.
-     */
-    int startWayPoint;
-    /**
-     * Index of the end way point in the geometry array.
-     */
-    int endWayPoint;
+    private final List<Step> steps;
 
-    public Segment(double distance, double duration, Double ascent, Double descent, Double avgSpeed, Double detourFactor,
-                   Double percentage, List<Step> steps, int startWayPoint, int endWayPoint) {
+    @JsonCreator
+    public Segment(@JsonProperty(value = "distance", required = true)
+                           double distance,
+                   @JsonProperty(value = "duration", required = true)
+                           double duration,
+                   @JsonProperty("ascent")
+                           Double ascent,
+                   @JsonProperty("descent")
+                           Double descent,
+                   @JsonProperty("avgspeed")
+                           Double avgSpeed,
+                   @JsonProperty("detourfactor")
+                           Double detourFactor,
+                   @JsonProperty("percentage")
+                           Double percentage,
+                   @JsonProperty("steps")
+                           List<Step> steps) {
         this.distance = distance;
         this.duration = duration;
         this.ascent = ascent;
@@ -62,47 +85,6 @@ public class Segment {
         this.detourFactor = detourFactor;
         this.percentage = percentage;
         this.steps = steps;
-        this.startWayPoint = startWayPoint;
-        this.endWayPoint = endWayPoint;
     }
 
-    public double getDistance() {
-        return distance;
-    }
-
-    public double getDuration() {
-        return duration;
-    }
-
-    public List<Step> getSteps() {
-        return steps;
-    }
-
-    public int getStartWayPoint() {
-        return startWayPoint;
-    }
-
-    public int getEndWayPoint() {
-        return endWayPoint;
-    }
-
-    public Double getAscent() {
-        return ascent;
-    }
-
-    public Double getDescent() {
-        return descent;
-    }
-
-    public Double getAvgSpeed() {
-        return avgSpeed;
-    }
-
-    public Double getDetourFactor() {
-        return detourFactor;
-    }
-
-    public Double getPercentage() {
-        return percentage;
-    }
 }

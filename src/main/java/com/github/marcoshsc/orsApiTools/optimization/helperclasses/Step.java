@@ -1,5 +1,6 @@
 package com.github.marcoshsc.orsApiTools.optimization.helperclasses;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -65,6 +66,7 @@ public class Step {
      */
     private final Double distance;
 
+    @JsonCreator
     public Step(@JsonProperty(value = "type", required = true)
                         StepTypeEnum type,
                 @JsonProperty(value = "arrival", required = true)

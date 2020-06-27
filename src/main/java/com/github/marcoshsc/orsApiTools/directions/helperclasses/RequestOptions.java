@@ -1,6 +1,13 @@
 package com.github.marcoshsc.orsApiTools.directions.helperclasses;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.marcoshsc.orsApiTools.directions.enums.*;
+import com.github.marcoshsc.orsApiTools.json.deserializers.CoordinateListDeserializer;
+import lombok.Getter;
+import lombok.ToString;
 import org.locationtech.jts.geom.Coordinate;
 
 import java.util.List;
@@ -11,52 +18,83 @@ import java.util.List;
  *
  * @author Marcos Henrique
  */
+@Getter
+@ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RequestOptions {
 
     /**
      * Vehicle profile used.
      */
-    EnumProfile profile;
+    private final EnumProfile profile;
+
     /**
      * Preference chosen.
      */
-    PreferenceEnum preference;
+    private final PreferenceEnum preference;
+
     /**
      * List of coordinates passed to the request.
      */
-    List<Coordinate> coordinates;
+    private final List<Coordinate> coordinates;
+
     /**
      * Language of the response.
      */
-    LanguageEnum language;
+    private final LanguageEnum language;
+
     /**
      * Measurement unit used.
      */
-    UnitsEnum units;
+    private final UnitsEnum units;
+
     /**
      * If geometry is present.
      */
-    boolean geometry;
+    private final boolean geometry;
+
     /**
      * Format of geometry.
      */
-    EnumDirectionsGeomType geometryFormat;
+    private final EnumDirectionsGeomType geometryFormat;
+
     /**
      * Format of instructions in the response.
      */
-    InstructionsFormatEnum instructionsFormat;
+    private final InstructionsFormatEnum instructionsFormat;
+
     /**
      * If instructions are present.
      */
-    boolean instructions;
+    private final boolean instructions;
+
     /**
      * If elevation data is present.
      */
-    boolean elevation;
+    private final boolean elevation;
 
-    public RequestOptions(EnumProfile profile, PreferenceEnum preference, List<Coordinate> coordinates,
-                          LanguageEnum language, UnitsEnum units, boolean geometry, EnumDirectionsGeomType geometryFormat,
-                          InstructionsFormatEnum instructionsFormat, boolean instructions, boolean elevation) {
+    @JsonCreator
+    public RequestOptions(@JsonProperty("profile")
+                                  EnumProfile profile,
+                          @JsonProperty("preference")
+                                  PreferenceEnum preference,
+                          @JsonProperty("coordinates")
+                          @JsonDeserialize(using = CoordinateListDeserializer.class)
+                                  List<Coordinate> coordinates,
+                          @JsonProperty("language")
+                                  LanguageEnum language,
+                          @JsonProperty("units")
+                                  UnitsEnum units,
+                          @JsonProperty("geometry")
+                                  boolean geometry,
+                          @JsonProperty("geometry_format")
+                                  EnumDirectionsGeomType geometryFormat,
+                          @JsonProperty("instructions_format")
+                                  InstructionsFormatEnum instructionsFormat,
+                          @JsonProperty("instructions")
+                                  boolean instructions,
+                          @JsonProperty("elevation")
+                                  boolean elevation) {
         this.profile = profile;
         this.preference = preference;
         this.coordinates = coordinates;
@@ -69,43 +107,4 @@ public class RequestOptions {
         this.elevation = elevation;
     }
 
-    public EnumProfile getProfile() {
-        return profile;
-    }
-
-    public PreferenceEnum getPreference() {
-        return preference;
-    }
-
-    public List<Coordinate> getCoordinates() {
-        return coordinates;
-    }
-
-    public LanguageEnum getLanguage() {
-        return language;
-    }
-
-    public UnitsEnum getUnits() {
-        return units;
-    }
-
-    public boolean isGeometry() {
-        return geometry;
-    }
-
-    public EnumDirectionsGeomType getGeometryFormat() {
-        return geometryFormat;
-    }
-
-    public InstructionsFormatEnum getInstructionsFormat() {
-        return instructionsFormat;
-    }
-
-    public boolean isInstructions() {
-        return instructions;
-    }
-
-    public boolean isElevation() {
-        return elevation;
-    }
 }

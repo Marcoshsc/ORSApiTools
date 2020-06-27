@@ -1,5 +1,6 @@
 package com.github.marcoshsc.orsApiTools.pois;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -39,6 +40,7 @@ public class PoisResponse {
      */
     private final PoisResponseOptions options;
 
+    @JsonCreator
     public PoisResponse(@JsonProperty("bbox")
                         @JsonDeserialize(using = GeneralBoundingBoxDeserializer.class)
                                 BoundingBox boundingBox,

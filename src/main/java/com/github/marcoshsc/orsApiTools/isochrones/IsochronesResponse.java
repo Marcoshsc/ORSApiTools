@@ -1,5 +1,6 @@
 package com.github.marcoshsc.orsApiTools.isochrones;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -21,6 +22,7 @@ public class IsochronesResponse {
 
     private final Info info;
 
+    @JsonCreator
     public IsochronesResponse(@JsonProperty(value = "features", required = true)
                                       List<Feature> features,
 

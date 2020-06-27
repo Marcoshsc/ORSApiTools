@@ -2,6 +2,8 @@ package com.github.marcoshsc.orsApiTools.matrix.general.helperclasses;
 
 import com.github.marcoshsc.orsApiTools.directions.enums.EnumProfile;
 import com.github.marcoshsc.orsApiTools.directions.enums.UnitsEnum;
+import lombok.Getter;
+import lombok.Setter;
 import org.locationtech.jts.geom.Coordinate;
 
 import java.util.List;
@@ -11,66 +13,39 @@ import java.util.List;
  *
  * @author Marcos Henrique
  */
+@Getter
 public class MatrixRequestOptions {
 
     /**
      * Vehicle profile used.
      */
-    private EnumProfile profile;
+    private final EnumProfile profile;
+
     /**
      * Measurement units used.
      */
-    private UnitsEnum units;
+    private final UnitsEnum units;
+
     /**
      * List of coordinates passed.
      */
+    @Setter
     private List<Coordinate> locations;
+
     /**
      * Source indexes in the location array passed.
      */
+    @Setter
     private List<Integer> sources;
+
     /**
      * Destination indexes in the location array passed.
      */
+    @Setter
     private List<Integer> destinations;
 
     public MatrixRequestOptions(EnumProfile profile, UnitsEnum units) {
         this.profile = profile;
         this.units = units;
-    }
-
-    public MatrixRequestOptions() {
-    }
-
-    public EnumProfile getProfile() {
-        return profile;
-    }
-
-    public UnitsEnum getUnits() {
-        return units;
-    }
-
-    public List<Coordinate> getLocations() {
-        return locations;
-    }
-
-    public List<Integer> getSources() {
-        return sources;
-    }
-
-    public List<Integer> getDestinations() {
-        return destinations;
-    }
-
-    public void setLocations(List<Coordinate> locations) {
-        this.locations = locations;
-    }
-
-    public void setSources(List<Integer> sources) {
-        this.sources = sources;
-    }
-
-    public void setDestinations(List<Integer> destinations) {
-        this.destinations = destinations;
     }
 }

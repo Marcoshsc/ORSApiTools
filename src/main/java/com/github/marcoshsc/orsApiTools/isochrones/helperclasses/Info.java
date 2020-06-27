@@ -1,5 +1,6 @@
 package com.github.marcoshsc.orsApiTools.isochrones.helperclasses;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -26,6 +27,7 @@ public class Info {
     private final EnumRangeType rangeType;
     private final List<EnumAttributes> attributes;
 
+    @JsonCreator
     public Info(@JsonProperty(value = "range", required = true) List<Integer> range,
                 @JsonProperty(value = "locations", required = true) List<Coordinate> locations,
                 @JsonProperty(value = "range_type") EnumRangeType rangeType,

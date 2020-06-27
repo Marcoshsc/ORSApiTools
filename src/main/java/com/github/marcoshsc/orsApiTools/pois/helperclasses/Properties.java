@@ -1,5 +1,6 @@
 package com.github.marcoshsc.orsApiTools.pois.helperclasses;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -46,6 +47,7 @@ public class Properties {
      */
     private final OSMTags tags;
 
+    @JsonCreator
     public Properties(@JsonProperty(value = "osm_id", required = true)
                               String osmId,
                       @JsonProperty(value = "osm_type", required = true)

@@ -3,6 +3,7 @@ package com.github.marcoshsc.orsApiTools.matrix.v1;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.marcoshsc.orsApiTools.directions.enums.EnumMetrics;
+import com.github.marcoshsc.orsApiTools.directions.enums.UnitsEnum;
 import com.github.marcoshsc.orsApiTools.general.enums.ORSEnum;
 import com.github.marcoshsc.orsApiTools.general.exceptions.InvalidParameters;
 import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
@@ -89,7 +90,8 @@ public class ORSMatrixRequest implements Request<MatrixResponse> {
             MatrixUtilityMethods.verifyMatrix(res.getDistances(), sources, destinations);
         if(hasDurations)
             MatrixUtilityMethods.verifyMatrix(res.getDurations(), sources, destinations);
-        MatrixRequestOptions options = new MatrixRequestOptions();
+        MatrixRequestOptions options = new MatrixRequestOptions(parameters.getProfile().getTypedValue(),
+                parameters.getUnits() == null ? UnitsEnum.METERS : parameters.getUnits().getTypedValue());
         options.setLocations(locations);
         options.setSources(sources);
         options.setDestinations(destinations);

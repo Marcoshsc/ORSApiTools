@@ -1,5 +1,6 @@
 package com.github.marcoshsc.orsApiTools.pois.helperclasses;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -61,6 +62,7 @@ public class OSMTags {
      */
     private final String phone;
 
+    @JsonCreator
     public OSMTags(@JsonProperty("name") String name,
                    @JsonProperty("address") String address,
                    @JsonProperty("website") String webSite,
