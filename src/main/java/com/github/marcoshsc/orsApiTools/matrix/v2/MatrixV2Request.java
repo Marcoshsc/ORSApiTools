@@ -221,7 +221,6 @@ public class MatrixV2Request implements Request<MatrixV2Response> {
             HttpResponse response = makeHttpRequest();
             UtilityFunctions.handleOSMStatusCode(response);
             String json = EntityUtils.toString(response.getEntity());
-            System.out.println(json);
             return new ObjectMapper().readValue(json, MatrixV2Response.class);
         } catch (IOException exc) {
             throw new RequestException("Error with the request. Log: " + exc.getMessage());

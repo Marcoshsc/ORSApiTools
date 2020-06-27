@@ -54,10 +54,7 @@ public class GeocodeSearchRequest implements Request<GeocodeSearchResponse> {
             validateRequest();
             String URL = buildURL();
             JSONObject responseJSON = UtilityFunctions.makeHTTPRequest(URL, headers, null);
-            System.out.println(responseJSON);
             return new ObjectMapper().readValue(responseJSON.toString(), GeocodeSearchResponse.class);
-//            JSONProcessingContext<GeocodeSearchResponse> context = new ORSJSONProcessor<>(new GeocodeSearchProcessingStrategy());
-//            return context.processJSON(responseJSON);
         } catch(JSONException | IOException exc) {
             throw new RequestException(exc.getMessage());
         }

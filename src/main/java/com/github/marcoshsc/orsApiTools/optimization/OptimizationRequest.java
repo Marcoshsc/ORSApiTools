@@ -52,7 +52,6 @@ public class OptimizationRequest implements Request<OptimizationResponse> {
             ObjectMapper mapper = new ObjectMapper();
             String URL = buildURL();
             String json = mapper.writeValueAsString(parameters);
-            System.out.println(json);
             HttpResponse response = UtilityFunctions.postHttpRequest(URL, json, headers);
             UtilityFunctions.handleOSMStatusCode(response);
             return mapper.readValue(EntityUtils.toString(response.getEntity()), OptimizationResponse.class);
