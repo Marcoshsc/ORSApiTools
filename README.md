@@ -1,15 +1,24 @@
 # ORSApiTools
 Java library that provides implementation of Open Route Service endpoints.
 
+## Updates
+
+Newer version 2.0 now includes Isochrones and Matrix V2 endpoint support, and a complete refactor was made in the code, in order to use jackson
+as the JSON parser library.
+
+Version 1.1 fixed bugs in the matrix endpoint.
+
 ## Information
 
 Library created by Marcos Henrique (Marcoshsc)<br>
-Currently on version 1.0
+Currently on version 2.0
 
 ## Description
 This library provides implementations of the following endpoints:
 - V1 Directions
 - V1 Matrix
+- V2 Matrix
+- Isochrones
 - Geocode Search
 - Optimization
 - Pois
@@ -31,12 +40,12 @@ If you want to build a new endpoint implementation, also open an issue to
 discuss what is going to be done.
 
 ## Importing
-Add the following dependency to your pom.xml:
+Add the following dependency to your pom.xml (Latest version):
 
     <dependency>
       <groupId>com.github.marcoshsc</groupId>
       <artifactId>orsApiTools</artifactId>
-      <version>1.0</version>
+      <version>2.0</version>
     </dependency>
     
 After that, everything is working. Enjoy!
