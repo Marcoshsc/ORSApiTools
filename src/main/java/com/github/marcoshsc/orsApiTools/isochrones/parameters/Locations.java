@@ -13,6 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 public class Locations {
 
+    /**
+     * The locations to use for the route as an array of longitude/latitude pairs
+     */
     @JsonValue
     @JsonSerialize(using = CoordinateListSerializer.class)
     private final List<Coordinate> value;

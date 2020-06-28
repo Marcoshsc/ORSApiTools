@@ -11,6 +11,9 @@ import org.locationtech.jts.geom.Coordinate;
 
 import java.util.List;
 
+/**
+ * List of comma separated lists of longitude,latitude coordinates.
+ */
 @Getter
 @Setter
 @ToString

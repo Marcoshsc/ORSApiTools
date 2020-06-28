@@ -7,6 +7,9 @@ import lombok.Getter;
 
 import java.util.List;
 
+/**
+ * List of isochrones attributes
+ */
 @Getter
 @AllArgsConstructor
 public class Attributes {

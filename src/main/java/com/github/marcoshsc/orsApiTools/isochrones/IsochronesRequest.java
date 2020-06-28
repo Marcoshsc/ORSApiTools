@@ -14,6 +14,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The Isochrone Service supports time and distance analyses for one single or multiple locations.
+ * You may also specify the isochrone interval or provide multiple exact isochrone range values.
+ * This service allows the same range of profile options as the /directions endpoint,
+ * which help you to further customize your request to obtain a more detailed reachability area response.
+ */
 @Getter
 public class IsochronesRequest implements Request<IsochronesResponse> {
 

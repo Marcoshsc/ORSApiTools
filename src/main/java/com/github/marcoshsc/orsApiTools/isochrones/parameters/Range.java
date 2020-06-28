@@ -8,6 +8,10 @@ import lombok.Getter;
 
 import java.util.List;
 
+/**
+ * Maximum range value of the analysis in seconds for time and metres for distance.Alternatively a comma separated
+ * list of specific single range values if more than one location is set.
+ */
 @Getter
 @AllArgsConstructor
 public class Range {

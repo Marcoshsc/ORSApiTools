@@ -7,6 +7,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Specifies the distance unit.
+ * Default: m.
+ */
 @Getter
 @Setter
 @ToString

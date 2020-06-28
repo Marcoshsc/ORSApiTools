@@ -4,6 +4,9 @@ import com.github.marcoshsc.orsApiTools.directions.enums.EnumProfile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * Specifies the route profile.
+ */
 @Getter
 @AllArgsConstructor
 public class Profile {

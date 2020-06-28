@@ -8,6 +8,10 @@ import lombok.ToString;
 
 import java.util.List;
 
+/**
+ * A list of indices that refers to the list of locations (starting with 0). {index_1},{index_2}[,{index_N} ...]
+ * or all (default). [0,3] for the first and fourth locations
+ */
 @Getter
 @Setter
 @ToString

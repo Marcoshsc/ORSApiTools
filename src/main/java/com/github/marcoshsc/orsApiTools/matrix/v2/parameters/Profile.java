@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Specifies the route profile.
+ */
 @Getter
 @Setter
 @ToString

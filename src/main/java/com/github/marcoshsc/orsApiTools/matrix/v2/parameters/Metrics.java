@@ -9,6 +9,12 @@ import lombok.ToString;
 
 import java.util.List;
 
+/**
+ * Specifies a list of returned metrics.
+ *
+ * distance - Returns distance matrix for specified points in defined units.
+ * duration - Returns duration matrix for specified points in seconds.
+ */
 @Getter
 @Setter
 @ToString
