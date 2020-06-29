@@ -26,7 +26,7 @@ public class IsochronesTest {
         parameters.setLocations(new Locations(Arrays.asList(new Coordinate(8.681495,
                 49.41461), new Coordinate(8.686507,49.41943))));
 //        parameters.setRangeType(new RangeType(EnumRangeType.DISTANCE));
-        parameters.setRange(new Range(Arrays.asList(100, 200)));
+        parameters.setRange(new Range(Arrays.asList(100.2, 200.0)));
         parameters.setSmoothing(new Smoothing(13));
 //        parameters.setAttributes(new Attributes(Arrays.asList(EnumAttributes.values())));
         IsochronesResponse response = req.makeRequest();

@@ -2,7 +2,7 @@ package com.github.marcoshsc.orsApiTools.isochrones.parameters;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.github.marcoshsc.orsApiTools.json.serializers.IntegerListSerializer;
+import com.github.marcoshsc.orsApiTools.json.serializers.RangeSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,7 +17,7 @@ import java.util.List;
 public class Range {
 
     @JsonValue
-    @JsonSerialize(using = IntegerListSerializer.class)
-    private final List<Integer> value;
+    @JsonSerialize(using = RangeSerializer.class)
+    private final List<Double> value;
 
 }
