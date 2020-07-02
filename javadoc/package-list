@@ -6,6 +6,7 @@ com.github.marcoshsc.orsApiTools.directions.v1
 com.github.marcoshsc.orsApiTools.directions.v1.errorhandlers
 com.github.marcoshsc.orsApiTools.directions.v1.parameters
 com.github.marcoshsc.orsApiTools.directions.v2
+com.github.marcoshsc.orsApiTools.directions.v2.helperclasses
 com.github.marcoshsc.orsApiTools.directions.v2.parameters
 com.github.marcoshsc.orsApiTools.general
 com.github.marcoshsc.orsApiTools.general.enums
