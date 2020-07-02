@@ -1,10 +1,12 @@
 com.github.marcoshsc.apiTests
-com.github.marcoshsc.orsApiTools.directions
 com.github.marcoshsc.orsApiTools.directions.enums
-com.github.marcoshsc.orsApiTools.directions.v1.errorhandlers
 com.github.marcoshsc.orsApiTools.directions.helperclasses
 com.github.marcoshsc.orsApiTools.directions.helperclasses.extrainfo
+com.github.marcoshsc.orsApiTools.directions.v1
+com.github.marcoshsc.orsApiTools.directions.v1.errorhandlers
 com.github.marcoshsc.orsApiTools.directions.v1.parameters
+com.github.marcoshsc.orsApiTools.directions.v2
+com.github.marcoshsc.orsApiTools.directions.v2.parameters
 com.github.marcoshsc.orsApiTools.general
 com.github.marcoshsc.orsApiTools.general.enums
 com.github.marcoshsc.orsApiTools.general.exceptions
