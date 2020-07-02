@@ -1,10 +1,10 @@
 package com.github.marcoshsc.apiTests;
 
 import com.github.marcoshsc.orsApiTools.directions.enums.*;
-import com.github.marcoshsc.orsApiTools.directions.helperclasses.Segment;
 import com.github.marcoshsc.orsApiTools.directions.helperclasses.Step;
 import com.github.marcoshsc.orsApiTools.directions.v2.DirectionsV2Request;
 import com.github.marcoshsc.orsApiTools.directions.v2.DirectionsV2Response;
+import com.github.marcoshsc.orsApiTools.directions.v2.helperclasses.Segment;
 import com.github.marcoshsc.orsApiTools.directions.v2.parameters.*;
 import com.github.marcoshsc.orsApiTools.general.ORSEndpoints;
 import com.github.marcoshsc.orsApiTools.general.exceptions.InvalidParameters;
@@ -26,8 +26,9 @@ public class DirectionsV2Test {
 //                new Coordinate(-43.5876127,-19.6845878),
 //                new Coordinate(-43.5840602,-19.6416472)
                 new Coordinate(-43.167751,-19.835670),
-                new Coordinate(-43.177152,-19.807156),
-                new Coordinate(-43.177,-19.807)
+                new Coordinate(-43.167751,-19.835670)
+//                new Coordinate(-43.177152,-19.807156),
+//                new Coordinate(-43.177,-19.807)
 
         )));
         req.getParameters().setAttributes(new Attributes(Arrays.asList(AttributesEnum.values())));

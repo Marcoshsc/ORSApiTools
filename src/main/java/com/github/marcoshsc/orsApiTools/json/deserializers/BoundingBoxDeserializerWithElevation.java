@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.github.marcoshsc.orsApiTools.directions.helperclasses.BoundingBoxWithElevation;
+import com.github.marcoshsc.orsApiTools.directions.v2.helperclasses.BoundingBoxWithElevation;
 
 import java.io.IOException;
 

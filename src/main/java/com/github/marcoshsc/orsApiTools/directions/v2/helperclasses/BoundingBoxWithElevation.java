@@ -1,4 +1,4 @@
-package com.github.marcoshsc.orsApiTools.directions.helperclasses;
+package com.github.marcoshsc.orsApiTools.directions.v2.helperclasses;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

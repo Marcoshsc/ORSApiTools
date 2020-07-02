@@ -33,6 +33,7 @@ public class DirectionsV2Request implements Request<DirectionsV2Response> {
             String URL = getUrl();
             ObjectMapper mapper = new ObjectMapper();
             String json = mapper.writeValueAsString(parameters);
+            System.out.println(json);
             HttpResponse response = UtilityFunctions.postHttpRequest(URL, json, headers);
             UtilityFunctions.handleOSMStatusCode(response);
             SimpleModule module = new SimpleModule();
