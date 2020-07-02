@@ -175,4 +175,59 @@ public interface UtilityFunctions {
         return handleRequest(response, null);
     }
 
+    static List<Coordinate> decodeGeometry(String encodedGeometry, boolean inclElevation) {
+        List<Coordinate> geometry = new ArrayList<>();
+        int len = encodedGeometry.length();
+        int index = 0;
+        int lat = 0;
+        int lng = 0;
+        int ele = 0;
+
+        while (index < len) {
+            int result = 1;
+            int shift = 0;
+            int b;
+            do {
+                b = encodedGeometry.charAt(index++) - 63 - 1;
+                result += b << shift;
+                shift += 5;
+            } while (b >= 0x1f);
+            lat += (result & 1) != 0 ? ~(result >> 1) : (result >> 1);
+
+            result = 1;
+            shift = 0;
+            do {
+                b = encodedGeometry.charAt(index++) - 63 - 1;
+                result += b << shift;
+                shift += 5;
+            } while (b >= 0x1f);
+            lng += (result & 1) != 0 ? ~(result >> 1) : (result >> 1);
+
+
+            if(inclElevation) {
+                result = 1;
+                shift = 0;
+                do {
+                    b = encodedGeometry.charAt(index++) - 63 - 1;
+                    result += b << shift;
+                    shift += 5;
+                } while (b >= 0x1f);
+                ele += (result & 1) != 0 ? ~(result >> 1) : (result >> 1);
+            }
+
+            Coordinate coordinate = new Coordinate();
+            try {
+                coordinate.setX((lat / 1E5));
+                coordinate.setY((lng / 1E5));
+                if(inclElevation){
+                    coordinate.setZ(((float) (ele / 100)));
+                }
+                geometry.add(coordinate);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return geometry;
+    }
+
 }

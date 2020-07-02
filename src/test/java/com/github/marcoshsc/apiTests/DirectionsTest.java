@@ -1,9 +1,9 @@
 package com.github.marcoshsc.apiTests;
 
-import com.github.marcoshsc.orsApiTools.directions.DirectionsResponse;
-import com.github.marcoshsc.orsApiTools.directions.ORSDirectionsRequest;
+import com.github.marcoshsc.orsApiTools.directions.v1.DirectionsResponse;
+import com.github.marcoshsc.orsApiTools.directions.v1.ORSDirectionsRequest;
 import com.github.marcoshsc.orsApiTools.directions.enums.*;
-import com.github.marcoshsc.orsApiTools.directions.parameters.*;
+import com.github.marcoshsc.orsApiTools.directions.v1.parameters.*;
 import com.github.marcoshsc.orsApiTools.directions.helperclasses.Segment;
 import com.github.marcoshsc.orsApiTools.directions.helperclasses.Step;
 import com.github.marcoshsc.orsApiTools.general.ORSEndpoints;

@@ -1,5 +1,6 @@
 package com.github.marcoshsc.orsApiTools.directions.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +33,7 @@ public enum LanguageEnum {
 		return value;
 	}
 
+	@JsonCreator
 	public static LanguageEnum getByStr(String value) {
 		for (LanguageEnum profile :
 				LanguageEnum.values()) {

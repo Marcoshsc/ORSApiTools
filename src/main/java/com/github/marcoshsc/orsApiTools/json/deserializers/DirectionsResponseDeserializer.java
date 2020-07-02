@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.github.marcoshsc.orsApiTools.directions.DirectionsResponse;
+import com.github.marcoshsc.orsApiTools.directions.v1.DirectionsResponse;
 import com.github.marcoshsc.orsApiTools.directions.helperclasses.RequestOptions;
 
 import java.io.IOException;
