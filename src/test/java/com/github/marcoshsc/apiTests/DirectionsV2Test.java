@@ -23,10 +23,10 @@ public class DirectionsV2Test {
         DirectionsV2Request req = ORSEndpoints.getDirectionsV2(ApiKeyGetter.getApiKey());
         req.getParameters().setProfile(new Profile(EnumProfile.DRIVING_CAR));
         req.getParameters().setCoordinates(new Coordinates(Arrays.asList(
-//                new Coordinate(-43.5876127,-19.6845878),
-//                new Coordinate(-43.5840602,-19.6416472)
-                new Coordinate(-43.167751,-19.835670),
-                new Coordinate(-43.167751,-19.835670)
+                new Coordinate(-43.5876127,-19.6845878),
+                new Coordinate(-43.5840602,-19.6416472)
+//                new Coordinate(-43.167751,-19.835670),
+//                new Coordinate(-43.167751,-19.835670)
 //                new Coordinate(-43.177152,-19.807156),
 //                new Coordinate(-43.177,-19.807)
 

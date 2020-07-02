@@ -217,8 +217,8 @@ public interface UtilityFunctions {
 
             Coordinate coordinate = new Coordinate();
             try {
-                coordinate.setX((lat / 1E5));
-                coordinate.setY((lng / 1E5));
+                coordinate.setY((lat / 1E5));
+                coordinate.setX((lng / 1E5));
                 if(inclElevation){
                     coordinate.setZ(((float) (ele / 100)));
                 }
