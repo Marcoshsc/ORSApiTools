@@ -162,7 +162,9 @@ public class MatrixV2Request implements Request<MatrixV2Response> {
         List<List<Double>> newDistances = MatrixUtilityMethods.getNewDistances(response);
         List<Location> newSources = response.getDestinations();
         List<Location> newDestinations = response.getSources();
-        return new MatrixV2Response(newDurations, newDistances, newSources, newDestinations);
+        MatrixV2Response newResponse = new MatrixV2Response(newDurations, newDistances, newSources, newDestinations);
+        newResponse.setRequestCounter(response.getRequestCounter());
+        return newResponse;
     }
 
     /**
