@@ -4,15 +4,18 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
 import com.github.marcoshsc.orsApiTools.utils.interfaces.StatusCodeHandlerStrategy;
-import org.apache.http.HttpResponse;
+import org.apache.http.*;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,16 +28,42 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public interface UtilityFunctions {
 
     static HttpResponse postHttpRequest(String URL, String json, Map<String, String> headers) throws IOException {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpRequestRetryHandler retryHandler = getHttpRequestRetryHandler();
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setRetryHandler(retryHandler)
+                .addInterceptorLast((HttpResponseInterceptor) (response, context) -> {
+                    int status = response.getStatusLine().getStatusCode();
+                    if (status > 200) {
+                        try {
+                            handleOSMStatusCode(response);
+                        } catch (RequestException exception) {
+                            throw new IOException(exception.getMessage());
+                        }
+                        throw new IOException("Status code " + status + " Found.");
+                    }
+                })
+                .build();
         HttpPost httpPost = new HttpPost(URL);
         for (String key : headers.keySet())
             httpPost.setHeader(key, headers.get(key));
         httpPost.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
         return httpClient.execute(httpPost);
+    }
+
+    static HttpRequestRetryHandler getHttpRequestRetryHandler() {
+        return (e, retryTimes, httpContext) -> {
+                try {
+                    TimeUnit.SECONDS.sleep(10);
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                }
+                return retryTimes < 10;
+            };
     }
 
     static void handleOSMStatusCode(HttpResponse response) throws RequestException {
@@ -45,7 +74,6 @@ public interface UtilityFunctions {
                         "due to overload or maintenance.");
                 ObjectMapper mapper = new ObjectMapper();
                 JsonNode node = mapper.readValue(EntityUtils.toString(response.getEntity()), JsonNode.class);
-                System.out.println(node);
                 if (node.has("error")) {
                     JsonNode errorNode = node.get("error");
                     if(errorNode.has("message")) {
@@ -136,12 +164,26 @@ public interface UtilityFunctions {
     static JSONObject makeHTTPRequest(String URL, Map<String, String> headers, StatusCodeHandlerStrategy handler)
             throws RequestException {
         try {
-            HttpClient v_Client = HttpClientBuilder.create().build();
+            HttpRequestRetryHandler retryHandler = getHttpRequestRetryHandler();
+            CloseableHttpClient httpClient = HttpClients.custom()
+                .setRetryHandler(retryHandler)
+                .addInterceptorLast((HttpResponseInterceptor) (response, context) -> {
+                    int status = response.getStatusLine().getStatusCode();
+                    if (status > 200) {
+                        try {
+                            handleOSMStatusCode(response);
+                        } catch (RequestException exception) {
+                            throw new IOException(exception.getMessage());
+                        }
+                        throw new IOException("Status code " + status + " Found.");
+                    }
+                })
+                .build();
             HttpGet v_Request = new HttpGet(URL);
             for(String key : headers.keySet()) {
                 v_Request.addHeader(key, headers.get(key));
             }
-            return handleRequest(handler, v_Client.execute(v_Request));
+            return handleRequest(handler, httpClient.execute(v_Request));
         } catch(IOException | JSONException exc) {
             throw new RequestException(exc.getMessage());
         }
