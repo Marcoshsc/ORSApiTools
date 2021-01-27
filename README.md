@@ -11,7 +11,7 @@ Version 1.1 fixed bugs in the matrix endpoint.
 ## Information
 
 Library created by Marcos Henrique (Marcoshsc)<br>
-Currently on version 2.0
+Currently on version 2.2.0
 
 ## Description
 This library provides implementations of the following endpoints:
