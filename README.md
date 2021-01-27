@@ -88,6 +88,18 @@ You will find some sample usages as listed below. See javadocs for better unders
     req.getParameters().setResolveLocations(new ResolveLocations(true));
     MatrixV2Response res = req.makeRequest();
     
+### Isochrones
+
+    IsochronesRequest req = ORSEndpoints.getIsochrones(ApiKeyGetter.getApiKey());
+    IsochronesParameters parameters = req.getParameters();
+    parameters.setProfile(new Profile(EnumProfile.DRIVING_HGV));
+    parameters.setLocations(new Locations(Arrays.asList(new Coordinate(8.681495,
+            49.41461), new Coordinate(8.686507,49.41943))));
+    parameters.setRangeType(new RangeType(EnumRangeType.DISTANCE));
+    parameters.setRange(new Range(Arrays.asList(100.2, 200.0)));
+    parameters.setSmoothing(new Smoothing(13));
+    IsochronesResponse response = req.makeRequest();
+    
 ### Geocode Search
 
     String key = ApiKeyGetter.getApiKey();
