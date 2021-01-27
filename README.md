@@ -15,9 +15,8 @@ Currently on version 2.0
 
 ## Description
 This library provides implementations of the following endpoints:
-- V1 Directions
-- V1 Matrix
-- V2 Matrix
+- Directions
+- Matrix
 - Isochrones
 - Geocode Search
 - Optimization
@@ -42,11 +41,13 @@ discuss what is going to be done.
 ## Importing
 Add the following dependency to your pom.xml (Latest version):
 
+    <!-- https://mvnrepository.com/artifact/com.github.marcoshsc/orsApiTools -->
     <dependency>
-      <groupId>com.github.marcoshsc</groupId>
-      <artifactId>orsApiTools</artifactId>
-      <version>2.0</version>
+        <groupId>com.github.marcoshsc</groupId>
+        <artifactId>orsApiTools</artifactId>
+        <version>2.2.0</version>
     </dependency>
+
     
 After that, everything is working. Enjoy!
     
@@ -58,28 +59,34 @@ You will find some sample usages as listed below. See javadocs for better unders
     
 ### Directions
 
-    ORSDirectionsRequest req = ORSEndpoints.getDirections(ApiKeyGetter.getApiKey());
+    DirectionsV2Request req = ORSEndpoints.getDirectionsV2(ApiKeyGetter.getApiKey());
     req.getParameters().setProfile(new Profile(EnumProfile.DRIVING_CAR));
-    req.getParameters().setGeometryFormat(new GeometryFormat(EnumDirectionsGeomType.GEOJSON));
     req.getParameters().setCoordinates(new Coordinates(Arrays.asList(
-            new Coordinate(-43.167751,-19.835670),
-            new Coordinate(-43.177152,-19.807156),
-            new Coordinate(-43.177,-19.807)
+            new Coordinate(-43.5876127,-19.6845878),
+            new Coordinate(-43.5840602,-19.6416472)
     )));
-    DirectionsResponse res = req.makeRequest();
+    req.getParameters().setAttributes(new Attributes(Arrays.asList(AttributesEnum.values())));
+    req.getParameters().setElevation(new Elevation(true));
+    req.getParameters().setManeuvers(new Maneuvers(true));
+    req.getParameters().setInstructionsFormat(new InstructionsFormat(InstructionsFormatEnum.HTML));
+    req.getParameters().setExtraInfo(new ExtraInfo(Collections.singletonList(ExtraInfoEnum.SURFACE)));
+
+    DirectionsV2Response res = req.makeRequest();
     
 ### Matrix
 
-    ORSMatrixRequest req = ORSEndpoints.getMatrix(ApiKeyGetter.getApiKey());
-    req.getParameters().setProfile(new Profile(EnumProfile.DRIVING_CAR));
+    MatrixV2Request req = ORSEndpoints.getMatrixV2(ApiKeyGetter.getApiKey());
+    req.getParameters().setProfile(new Profile(EnumProfile.FOOT_WALKING));
     req.getParameters().setLocations(new Locations(Arrays.asList(
-            new Coordinate(-43.162397,-19.833052),
-            new Coordinate(-43.192708,-19.830783),
-            new Coordinate(-43.201001,-19.850220),
-            new Coordinate(-43.173462,-19.822818)
+            new Coordinate(-47.050871,-17.841496),
+            new Coordinate(-47.044044,-17.636455),
+            new Coordinate(-47.100653,-17.795555),
+            new Coordinate(-47.030208,-17.81385),
+            new Coordinate(-47.214168,-17.733528)
     )));
-    req.getParameters().setMetrics(new Metrics(Arrays.asList(EnumMetrics.values())));
-    MatrixResponse res = req.makeRequest();
+    req.getParameters().setMetrics(new Metrics(Collections.singletonList(EnumMetrics.DISTANCE)));
+    req.getParameters().setResolveLocations(new ResolveLocations(true));
+    MatrixV2Response res = req.makeRequest();
     
 ### Geocode Search
 
