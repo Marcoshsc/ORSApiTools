@@ -57,13 +57,14 @@ public class Properties {
                       @JsonProperty(value = "category_ids", required = true)
                       @JsonDeserialize(using = PoisCategoryListDeserializer.class)
                               List<PoisCategory> categories,
-                      @JsonProperty(value = "osm_tags", required = true)
+                      @JsonProperty(value = "osm_tags")
                               OSMTags tags) {
         this.osmId = osmId;
         this.osmType = osmType;
         this.distance = distance;
         this.categories = categories;
-        this.tags = tags;
+        this.tags = tags == null ? new OSMTags(null, null, null, null, null,
+                null, null, null, null) : tags;
     }
 
 }
