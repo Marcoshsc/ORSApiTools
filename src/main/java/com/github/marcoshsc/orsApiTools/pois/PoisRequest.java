@@ -1,12 +1,14 @@
 package com.github.marcoshsc.orsApiTools.pois;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.marcoshsc.orsApiTools.general.enums.ORSEnum;
 import com.github.marcoshsc.orsApiTools.general.exceptions.InvalidParameters;
 import com.github.marcoshsc.orsApiTools.general.exceptions.RequestException;
 import com.github.marcoshsc.orsApiTools.general.interfaces.Request;
 import com.github.marcoshsc.orsApiTools.pois.enums.PoisRequestEnum;
 import com.github.marcoshsc.orsApiTools.pois.enums.SortByEnum;
+import com.github.marcoshsc.orsApiTools.pois.helperclasses.PoisResponseConverter;
 import com.github.marcoshsc.orsApiTools.urlUtils.UrlBuilder;
 import com.github.marcoshsc.orsApiTools.utils.UtilityFunctions;
 import lombok.Getter;
@@ -54,6 +56,9 @@ public class PoisRequest implements Request<PoisResponse> {
             String json = mapper.writeValueAsString(parameters);
             HttpResponse response = UtilityFunctions.postHttpRequest(URL, json, headers);
             UtilityFunctions.handleOSMStatusCode(response);
+            SimpleModule module = new SimpleModule();
+            module.addDeserializer(PoisResponse.class, new PoisResponseConverter());
+            mapper.registerModule(module);
             return mapper.readValue(EntityUtils.toString(response.getEntity()), PoisResponse.class);
         } catch (IOException | JSONException e) {
             throw new RequestException(e.getMessage());
